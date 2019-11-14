@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_in_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager_event_show"
+            android:layout_width="match_parent"
+            android:layout_height="181dp">
+
+        </androidx.viewpager.widget.ViewPager>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar_in_main"
+            android:layout_width="match_parent"
+            android:layout_height="11dp"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
+        <ListView
+            android:id="@+id/list_view_event"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@android:color/holo_blue_light"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:rippleColor="#e7d161"
+        app:srcCompat="@android:drawable/ic_input_add" />
+</RelativeLayout>

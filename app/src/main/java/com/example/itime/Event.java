@@ -15,8 +15,6 @@ public class Event {
     public Event(String title, int resourceId) {
         this.title = title;
         this.resourceId=resourceId;
-
-
     }
 
     public String getTitle() {

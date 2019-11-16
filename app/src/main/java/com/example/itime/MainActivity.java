@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,EventEditActivity.class);
-                intent.putExtra("title","生日,纪念日,节日,考试...");
-                intent.putExtra("memo","想说的话,目标,格言...");
                 startActivityForResult(intent,REQUEST_CODE_NEW_EVENT);
             }
         });
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String title = data.getStringExtra("title");
                     String memo = data.getStringExtra("memo");
-                    getListBooks().add(new Event(title, R.drawable.backg_2_mini));
+                    getListBooks().add(new Event(title,memo, R.drawable.backg_2_mini));
                     eventAdapter.notifyDataSetChanged();
                 }
                 break;
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void init() {
-        listEvents.add(new Event("我的生日",R.drawable.backg_1_mini));
+        listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
     }
     public List<Event> getListBooks(){
         return listEvents;
@@ -93,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
             ((ImageView) view.findViewById(R.id.image_view_event_cover)).setImageResource(event.getResourceId());
             ((TextView) view.findViewById(R.id.text_view_event_title)).setText(event.getTitle());
+            ((TextView) view.findViewById(R.id.text_view_event_date)).setText(event.calendarToString());
+            ((TextView) view.findViewById(R.id.text_view_event_memo)).setText(event.getMemo());
             return view;
         }
     }

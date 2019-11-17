@@ -1,97 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".EventEditActivity">
 
-    <View
-        android:id="@+id/divider2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_memo"
-        tools:layout_editor_absoluteX="-2dp" />
+        android:layout_height="203dp"
+        android:background="@color/colorMain">
 
-    <TextView
-        android:id="@+id/text_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginLeft="46dp"
-        android:layout_marginTop="42dp"
-        android:text="标题"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="46dp"
+            android:layout_marginLeft="46dp"
+            android:layout_marginTop="42dp"
+            android:text="标题"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edit_text_title"
-        android:layout_width="352dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="13dp"
-        android:ems="10"
-        android:hint="生日,纪念日,节日,考试..."
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/text_view_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
+        <EditText
+            android:id="@+id/edit_text_title"
+            android:layout_width="352dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:hint="  生日,纪念日,节日,考试..."
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/text_view_title"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
-    <TextView
-        android:id="@+id/text_view_memo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="备注"
-        app:layout_constraintStart_toStartOf="@+id/text_view_title"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
+        <TextView
+            android:id="@+id/text_view_memo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="备注"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/text_view_title"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
-    <EditText
-        android:id="@+id/edit_text_memo"
-        android:layout_width="353dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="13dp"
-        android:ems="10"
-        android:hint="想说的话,目标,格言..."
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/text_view_memo"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_memo" />
+        <EditText
+            android:id="@+id/edit_text_memo"
+            android:layout_width="353dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:hint="  想说的话,目标,格言..."
+            android:inputType="textPersonName"
+            android:textColorHint="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/text_view_memo"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_memo" />
 
-    <ImageButton
-        android:id="@+id/image_button_back"
-        android:layout_width="38dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/button_shape"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/homeAsUpIndicator" />
+        <ImageButton
+            android:id="@+id/image_button_back"
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_shape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_stat_back"
+            tools:ignore="VectorDrawableCompat" />
 
-    <Button
-        android:id="@+id/button_ok"
-        android:layout_width="42dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/button_shape"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/button_ok"
+            android:layout_width="37dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/button_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_stat_done"
+            tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_heig534dp">
+    -->
     <Button
         android:id="@+id/button_choose_date"
-        android:layout_width="371dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="38dp"
+        android:layout_width="373dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:background="@color/white"
-        android:drawableLeft="@android:drawable/ic_lock_idle_alarm"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+        android:drawableLeft="@mipmap/ic_stat_date"
+        android:text="日期\n长按使用日期计算器" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/button_choose_repeat"
+        android:layout_width="373dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/ic_stat_repeat"
+        android:text="重复设置\n无" />
+
+    <Button
+        android:id="@+id/button_choose_picture"
+        android:layout_width="373dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/ic_stat_picture"
+        android:text="图片" />
+
+    <Button
+        android:id="@+id/button_choose_label"
+        android:layout_width="373dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/ic_stat_label"
+        android:text="添加标签"/>
+<!--
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <Button
+            android:id="@+id/button_choose_date"
+            android:layout_width="371dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="38dp"
+            android:background="@color/white"
+            android:drawableLeft="@android:drawable/ic_lock_idle_alarm"
+            android:text="Button"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+-->
+</LinearLayout>

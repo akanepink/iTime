@@ -3,6 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorMain">#51A9FE</color>
     <color name="dkgray">#80808FF0</color>
     <color name="yello">#F8F8FF00</color>
     <color name="white">#FFFFFF</color>

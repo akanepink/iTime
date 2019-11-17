@@ -53,4 +53,6 @@
         <!-- 只可以控制字体的大小，没有找到控制字体颜色的字段-->
         <item name="android:textSize">50sp</item>
     </style>
+
+
 </resources>

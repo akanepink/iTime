@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <DatePicker
+    <TimePicker
         android:id="@+id/time_picker_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
         android:calendarViewShown="true"
-        android:datePickerMode="calendar"
+        android:headerBackground="@android:color/holo_blue_bright"
         android:spinnersShown="false" />
 
     <View
@@ -43,10 +43,10 @@
             android:text="返回"
             android:gravity="center"
             android:textColor="@android:color/black"
-            android:id="@+id/button_date_back"/>
+            android:id="@+id/button_time_back"/>
 
         <TextView
-            android:id="@+id/button_date_ensure"
+            android:id="@+id/button_time_ensure"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,8 +54,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="确认"
-            android:textColor="@android:color/black"
-            />
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 

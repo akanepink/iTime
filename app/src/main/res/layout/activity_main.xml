@@ -50,7 +50,7 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:tint="#FFFFFF"
-        app:backgroundTint="@android:color/holo_blue_light"
+        app:backgroundTint="@color/colorMain"
         app:elevation="5dp"
         app:fabSize="normal"
         app:rippleColor="#e7d161"

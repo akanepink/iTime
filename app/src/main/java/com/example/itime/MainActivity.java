@@ -22,7 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,7 +65,19 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String title = data.getStringExtra("title");
                     String memo = data.getStringExtra("memo");
-                    getListBooks().add(new Event(title,memo, R.drawable.backg_2_mini));
+                    int year=data.getIntExtra("year",0);
+                    int month=data.getIntExtra("month",0)+1;
+                    int day=data.getIntExtra("day",0);
+                    Calendar calendar=Calendar.getInstance();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Date date = dateFormat.parse(String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day));
+                        calendar.setTime(date);
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    getListEvents().add(new Event(title,memo,calendar, R.drawable.backg_2_mini));
                     eventAdapter.notifyDataSetChanged();
                 }
                 break;
@@ -72,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
     }
-    public List<Event> getListBooks(){
+    public List<Event> getListEvents(){
         return listEvents;
     }
     public class EventAdapter extends ArrayAdapter<Event> {

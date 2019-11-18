@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //利用Bundle传递序列化的Event
                 Intent intent=new Intent(MainActivity.this,EventShowActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("event", listEvents.get(position));//序列化

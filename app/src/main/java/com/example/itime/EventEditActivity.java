@@ -86,8 +86,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
-
     private void showDatePickDialog(){
         Calendar nowCalendar=Calendar.getInstance();
         new DatePickerDialog(EventEditActivity.this, new DatePickerDialog.OnDateSetListener() {

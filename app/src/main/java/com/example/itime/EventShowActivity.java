@@ -27,6 +27,7 @@ public class EventShowActivity extends AppCompatActivity {
         textViewShowDate=(TextView)this.findViewById(R.id.text_view_show_event_date);
         textViewShowCountdown=(TextView)this.findViewById(R.id.text_view_show_event_countdown);
 
+        //接收序列化的Event
         event=(Event)getIntent().getExtras().getSerializable("event");
         textViewShowTitle.setText(event.getTitle());
         textViewShowDate.setText(event.calendarToString());

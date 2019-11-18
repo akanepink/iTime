@@ -11,8 +11,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +33,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_NEW_EVENT = 901;
+    public static final int REQUEST_CODE_SHOW_EVENT = 902;
     private ViewPager viewPagerEvents;
     private FloatingActionButton buttonAdd;
     private List<Event> listEvents= new ArrayList<>();
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         eventAdapter=new EventAdapter(MainActivity.this,R.layout.list_view_item_event,listEvents);
-        ListView listViewEvents=(ListView)this.findViewById(R.id.list_view_event);
+        final ListView listViewEvents=(ListView)this.findViewById(R.id.list_view_event);
         listViewEvents.setAdapter(eventAdapter);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,EventEditActivity.class);
                 startActivityForResult(intent,REQUEST_CODE_NEW_EVENT);
+            }
+        });
+
+        listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(MainActivity.this,EventShowActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("event", listEvents.get(position));//序列化
+                intent.putExtras(bundle);//发送数据
+                startActivityForResult(intent, REQUEST_CODE_SHOW_EVENT);
             }
         });
     }

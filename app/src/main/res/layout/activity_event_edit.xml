@@ -88,11 +88,7 @@
             tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-<!--
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_heig534dp">
-    -->
+
     <Button
         android:id="@+id/button_choose_date"
         android:layout_width="373dp"

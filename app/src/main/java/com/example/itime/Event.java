@@ -5,10 +5,11 @@ import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Event {
+public class Event implements Serializable {
 
     private String title;
     private String memo;
@@ -66,7 +67,7 @@ public class Event {
             if (calendar == null) {
                 return "";
             }
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置你想要的格式
+            SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");// 设置你想要的格式
             String dateStr = df.format(calendar.getTime());
             return dateStr;
         }catch (Exception e){

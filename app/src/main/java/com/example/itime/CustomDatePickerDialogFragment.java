@@ -57,9 +57,9 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         int style;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            style = R.style.ZZBDatePickerDialogLStyle;
+            style = R.style.HDatePickerDialogLStyle;
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            style = R.style.ZZBDatePickerDialogLStyle;
+            style = R.style.HDatePickerDialogLStyle;
         } else {
             style = getTheme();
         }
@@ -82,7 +82,6 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
             header.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public void onClick(View v) {

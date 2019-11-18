@@ -1,6 +1,7 @@
 package com.example.itime;
 
 
+import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,23 +58,6 @@ public class CustomTimePickerDialogFragment extends DialogFragment implements Ti
         return view;
     }
 
-    /*
-    还未找到timePicker的style
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int style;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            style = R.style.ZZBDatePickerDialogLStyle;
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            style = R.style.ZZBDatePickerDialogLStyle;
-        } else {
-            style = getTheme();
-        }
-        return new Dialog(getActivity(), style);
-    }
-     */
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -87,7 +71,7 @@ public class CustomTimePickerDialogFragment extends DialogFragment implements Ti
             ensureTimeButton = view.findViewById(R.id.button_time_ensure);
             ensureTimeButton.setOnClickListener(this);
             ensureTimeButton.setVisibility(View.VISIBLE);
-            //如果只要日历部分，隐藏header
+
             ViewGroup mContainer = (ViewGroup) timePicker.getChildAt(0);
 
         }

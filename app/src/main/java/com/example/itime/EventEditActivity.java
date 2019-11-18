@@ -78,8 +78,8 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_choose_date:
-                showTimePickDialog();
-                showDatePickDialog();
+                showTimePickDialog1();
+                showDatePickDialog1();
                 break;
             default:
                 break;

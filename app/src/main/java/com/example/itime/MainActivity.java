@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_NEW_EVENT = 901;
     public static final int REQUEST_CODE_SHOW_EVENT = 902;
+    public static final int RESULT_CODE_EDIT_OK = 703;
+    public static final int RESULT_CODE_DELETE_OK = 704;
     private ViewPager viewPagerEvents;
     private FloatingActionButton buttonAdd;
     private List<Event> listEvents= new ArrayList<>();
@@ -66,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 //利用Bundle传递序列化的Event
                 Intent intent=new Intent(MainActivity.this,EventShowActivity.class);
                 Bundle bundle=new Bundle();
+                bundle.putInt("position",position);
+
+                //Toast.makeText(MainActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                if(position==0)
+                    Toast.makeText(MainActivity.this,position,Toast.LENGTH_SHORT).show();
                 bundle.putSerializable("event", listEvents.get(position));//序列化
                 intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent, REQUEST_CODE_SHOW_EVENT);
@@ -96,11 +104,33 @@ public class MainActivity extends AppCompatActivity {
                     eventAdapter.notifyDataSetChanged();
                 }
                 break;
+            case REQUEST_CODE_SHOW_EVENT:
+                if(resultCode==RESULT_CODE_EDIT_OK)
+                {
+                    Event newEvent=(Event)data.getExtras().getSerializable("newEvent");
+                    listEvents.add(newEvent);
+                    eventAdapter.notifyDataSetChanged();
+                }
+                if(resultCode==RESULT_CODE_DELETE_OK)
+                {
+                    int deletePosition=data.getIntExtra("deletePosition",0);
+                    Toast.makeText(MainActivity.this,"+++"+deletePosition,Toast.LENGTH_SHORT).show();
+                    if(deletePosition>=0)
+                    {
+                        listEvents.remove(deletePosition);
+                        eventAdapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_LONG).show();
+                    }
+
+                }
+                break;
 
         }
     }
     private void init() {
         listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
+        listEvents.add(new Event("likey","memo",R.drawable.backg_2_mini));
+        listEvents.add(new Event("numnum","owewdsdmo",R.drawable.backg_3_mini));
     }
     public List<Event> getListEvents(){
         return listEvents;

@@ -57,6 +57,7 @@
             android:ems="10"
             android:hint="  想说的话,目标,格言..."
             android:inputType="textPersonName"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
             app:layout_constraintStart_toStartOf="@+id/text_view_memo"
             app:layout_constraintTop_toBottomOf="@+id/text_view_memo" />

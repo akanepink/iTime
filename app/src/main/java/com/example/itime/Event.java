@@ -17,17 +17,22 @@ public class Event implements Serializable {
     private int resourceId;
 
 
-
-    public Event(String title, String memo, int resourceId) {
-        this.title = title;
-        this.memo = memo;
-        this.resourceId = resourceId;
-    }
-
     public Event(String title, String memo, Calendar calendar, int resourceId) {
         this.title = title;
         this.memo = memo;
         this.calendar = calendar;
+        this.resourceId = resourceId;
+    }
+
+    public Event(String title, String memo, Calendar calendar) {
+        this.title = title;
+        this.memo = memo;
+        this.calendar = calendar;
+    }
+
+    public Event(String title, String memo, int resourceId) {
+        this.title = title;
+        this.memo = memo;
         this.resourceId = resourceId;
     }
 

@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -25,11 +27,11 @@ import java.util.Calendar;
  */
 public class CustomDatePickerDialogFragment extends DialogFragment implements DatePicker.OnDateChangedListener,View.OnClickListener {
     public static final String CURRENT_DATE = "datepicker_current_date";
-    Calendar currentDate;
+    private Calendar currentDate;
 
-    DatePicker datePicker;
-    TextView backButton;
-    TextView ensureButton;
+    private DatePicker datePicker;
+    private TextView backButton;
+    private TextView ensureButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +40,10 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         Bundle bundle = getArguments();
         currentDate = (Calendar) bundle.getSerializable(CURRENT_DATE);
 
+        //datePicker.updateDate(2020,2,12);
+        //Date date=currentDate.getTime();
     }
+
 
     @Nullable
     @Override
@@ -71,12 +76,14 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         super.onViewCreated(view, savedInstanceState);
         if (view != null) {
             datePicker = view.findViewById(R.id.time_picker_view);
+            datePicker.updateDate(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
             backButton = view.findViewById(R.id.button_date_back);
             backButton.setOnClickListener(this);
             ensureButton = view.findViewById(R.id.button_date_ensure);
             ensureButton.setOnClickListener(this);
             ensureButton.setVisibility(View.VISIBLE);
             //如果只要日历部分，隐藏header
+
             ViewGroup mContainer = (ViewGroup) datePicker.getChildAt(0);
             View header = mContainer.getChildAt(0);
             header.setVisibility(View.GONE);

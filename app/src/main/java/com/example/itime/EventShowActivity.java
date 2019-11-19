@@ -17,6 +17,7 @@ public class EventShowActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_EDIT_BOOK = 903;
     public static final int RESULT_CODE_EDIT_OK = 703;
     public static final int RESULT_CODE_DELETE_OK = 704;
+    public static final int RESULT_CODE_EDIT_SHOW_OK = 705;
     private ImageButton buttonShowBack,buttonShowFull,buttonShowDelete;
     private ImageButton buttonShowShare,buttonShowEdit;
     private TextView textViewShowTitle,textViewShowDate,textViewShowCountdown;
@@ -97,16 +98,17 @@ public class EventShowActivity extends AppCompatActivity {
         buttonShowEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent=new Intent(EventShowActivity.this,EventEditActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putInt("position",position);
                 bundle.putSerializable("event", event);//序列化
                 intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent, REQUEST_CODE_EDIT_BOOK);
+                //EventShowActivity.this.finish();
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -114,15 +116,18 @@ public class EventShowActivity extends AppCompatActivity {
         switch (requestCode)
         {
             case REQUEST_CODE_EDIT_BOOK:
-                if(resultCode==RESULT_OK)
+                if(resultCode==RESULT_CODE_EDIT_OK)
                 {
-                    Event newEditEvent=(Event)getIntent().getExtras().getSerializable("newEditEvent");
+                    Event newEditEvent=(Event)data.getExtras().getSerializable("newEditEvent");
                     Intent newIntent=new Intent();
                     Bundle newBundle=new Bundle();
-                    newBundle.putSerializable("newEvent",newEditEvent);
-                    setResult(RESULT_CODE_EDIT_OK,newIntent);
+                    newBundle.putInt("position",position);
+                    newBundle.putSerializable("newEditEvent",newEditEvent);
+                    newIntent.putExtras(newBundle);
+                    setResult( RESULT_CODE_EDIT_SHOW_OK,newIntent);
                     //关闭该activity
                     EventShowActivity.this.finish();
+
                 }
         }
     }

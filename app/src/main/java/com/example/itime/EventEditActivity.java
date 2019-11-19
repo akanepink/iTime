@@ -25,7 +25,10 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
     Calendar updateDate;
     int year,month,day;
     int hour,minute;
+    private Event receiveEvent=null;
    // private int year,month,day;
+    public static final int RESULT_CODE_EDIT_OK = 703;
+    private boolean dateChangeFlag=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +44,15 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         editTextTitle=(EditText)this.findViewById(R.id.edit_text_title);
         editTextMemo=(EditText)this.findViewById(R.id.edit_text_memo);
 
-        //点击ListView中的哪一个Event，就传递哪一个Event的信息
-        editTextTitle.setText(getIntent().getStringExtra("title"));
-        editTextMemo.setText(getIntent().getStringExtra("memo"));
+
+        final int position=getIntent().getExtras().getInt("position",-1);
+        receiveEvent=(Event)getIntent().getExtras().getSerializable("event");
+        if(receiveEvent!=null) {
+            //点击ListView中的哪一个Event，就传递哪一个Event的信息
+            editTextTitle.setText(receiveEvent.getTitle());
+            editTextMemo.setText(receiveEvent.getMemo());
+            buttonDate.setText("日期\n"+receiveEvent.calendarToString());
+        }
 
         buttonDate.setOnClickListener(this);
 
@@ -51,14 +60,34 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.putExtra("title",editTextTitle.getText().toString());
-                intent.putExtra("memo",editTextMemo.getText().toString());
-                intent.putExtra("year",year);
-                intent.putExtra("month",month);
-                intent.putExtra("day",day);
-                setResult(RESULT_OK,intent);
-                EventEditActivity.this.finish();
+
+                if(receiveEvent!=null) {
+                    if(dateChangeFlag==true)
+                    {receiveEvent.getCalendar().set(year,month,day);}
+                    receiveEvent.setTitle(editTextTitle.getText().toString());
+                    receiveEvent.setMemo(editTextMemo.getText().toString());
+
+                    Intent newIntent = new Intent();
+                    Bundle newBundle = new Bundle();
+                    //newBundle.putInt("position",position);
+                    newBundle.putSerializable("newEditEvent", receiveEvent);
+
+                    newIntent.putExtras(newBundle);
+                    setResult(RESULT_CODE_EDIT_OK, newIntent);
+                    EventEditActivity.this.finish();
+                }else {
+                    Intent intent=new Intent();
+                    Bundle newBundle=new Bundle();
+
+                    Calendar newCalendar=Calendar.getInstance();
+                    newCalendar.set(year,month,day);
+                    Event newEvent=new Event(editTextTitle.getText().toString(),editTextMemo.getText().toString(),newCalendar);
+
+                    newBundle.putSerializable("newEvent",newEvent);
+                    intent.putExtras(newBundle);
+                    setResult(RESULT_OK, intent);
+                    EventEditActivity.this.finish();
+                }
             }
         });
 
@@ -104,19 +133,34 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
 
         CustomDatePickerDialogFragment fragment = new CustomDatePickerDialogFragment();
         fragment.setOnSelectedDateListener(this);//注册选择日期的监听器
+        if(receiveEvent==null) {
+            Bundle bundle = new Bundle();
+            Calendar currentDate = Calendar.getInstance();
+            currentDate.setTimeInMillis(System.currentTimeMillis());
+            currentDate.set(Calendar.HOUR_OF_DAY, 0);
+            currentDate.set(Calendar.MINUTE, 0);
+            currentDate.set(Calendar.SECOND, 0);
+            currentDate.set(Calendar.MILLISECOND, 0);
+            bundle.putSerializable(CustomDatePickerDialogFragment.CURRENT_DATE, currentDate);
 
-        Bundle bundle = new Bundle();
-        Calendar currentDate = Calendar.getInstance();
-        currentDate.setTimeInMillis(System.currentTimeMillis());
-        currentDate.set(Calendar.HOUR_OF_DAY,0);
-        currentDate.set(Calendar.MINUTE,0);
-        currentDate.set(Calendar.SECOND,0);
-        currentDate.set(Calendar.MILLISECOND,0);
-        bundle.putSerializable(CustomDatePickerDialogFragment.CURRENT_DATE,currentDate);
+            fragment.setArguments(bundle);
+            fragment.show(getSupportFragmentManager(), CustomDatePickerDialogFragment.class.getSimpleName());
+        }
+        else{
+            Bundle bundle = new Bundle();
+            Calendar currentDate = receiveEvent.getCalendar();
+            //Toast.makeText(EventEditActivity.this,currentDate.get(Calendar.YEAR)+":"+currentDate.MONTH+":"+currentDate.DAY_OF_MONTH,Toast.LENGTH_SHORT).show();
+            currentDate.setTimeInMillis(System.currentTimeMillis());
+            currentDate.set(Calendar.HOUR_OF_DAY, 0);
+            currentDate.set(Calendar.MINUTE, 0);
+            currentDate.set(Calendar.SECOND, 0);
+            currentDate.set(Calendar.MILLISECOND, 0);
+            bundle.putSerializable(CustomDatePickerDialogFragment.CURRENT_DATE, currentDate);
 
-
-        fragment.setArguments(bundle);
-        fragment.show(getSupportFragmentManager(),CustomDatePickerDialogFragment.class.getSimpleName());
+            fragment.setArguments(bundle);
+            fragment.show(getSupportFragmentManager(), CustomDatePickerDialogFragment.class.getSimpleName());
+        }
+        dateChangeFlag=true;
     }
 
     private void showTimePickDialog1() {

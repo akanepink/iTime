@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_SHOW_EVENT = 902;
     public static final int RESULT_CODE_EDIT_OK = 703;
     public static final int RESULT_CODE_DELETE_OK = 704;
+    public static final int RESULT_CODE_EDIT_SHOW_OK = 705;
     private ViewPager viewPagerEvents;
     private FloatingActionButton buttonAdd;
     private List<Event> listEvents= new ArrayList<>();
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,EventEditActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("event", null);//序列化
+                intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent,REQUEST_CODE_NEW_EVENT);
             }
         });
@@ -70,10 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,EventShowActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putInt("position",position);
-
-                //Toast.makeText(MainActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
-                if(position==0)
-                    Toast.makeText(MainActivity.this,position,Toast.LENGTH_SHORT).show();
                 bundle.putSerializable("event", listEvents.get(position));//序列化
                 intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent, REQUEST_CODE_SHOW_EVENT);
@@ -86,30 +86,27 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_NEW_EVENT:
                 if (resultCode == RESULT_OK) {
-                    String title = data.getStringExtra("title");
-                    String memo = data.getStringExtra("memo");
-                    int year=data.getIntExtra("year",0);
-                    int month=data.getIntExtra("month",0)+1;
-                    int day=data.getIntExtra("day",0);
-                    Calendar calendar=Calendar.getInstance();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    try {
-                        Date date = dateFormat.parse(String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day));
-                        calendar.setTime(date);
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    getListEvents().add(new Event(title,memo,calendar, R.drawable.backg_2_mini));
+                    //需要修改
+                    Event newEvent=(Event)data.getExtras().getSerializable("newEvent");
+                    newEvent.setResourceId(R.drawable.backg_2_mini);
+                    getListEvents().add(newEvent);
                     eventAdapter.notifyDataSetChanged();
                 }
                 break;
             case REQUEST_CODE_SHOW_EVENT:
-                if(resultCode==RESULT_CODE_EDIT_OK)
+                if(resultCode== RESULT_CODE_EDIT_SHOW_OK)
                 {
-                    Event newEvent=(Event)data.getExtras().getSerializable("newEvent");
-                    listEvents.add(newEvent);
-                    eventAdapter.notifyDataSetChanged();
+                    //Toast.makeText(MainActivity.this,"ok",Toast.LENGTH_SHORT).show();//调试用
+                    //需要修改
+                    Event newEditEvent=(Event)data.getExtras().getSerializable("newEditEvent");
+                    int position=data.getExtras().getInt("position",-1);
+                    if(position>=0){
+                        listEvents.get(position).setTitle(newEditEvent.getTitle());
+                        listEvents.get(position).setMemo(newEditEvent.getMemo());
+                        listEvents.get(position).setCalendar(newEditEvent.getCalendar());
+                        eventAdapter.notifyDataSetChanged();
+
+                    }
                 }
                 if(resultCode==RESULT_CODE_DELETE_OK)
                 {
@@ -121,20 +118,21 @@ public class MainActivity extends AppCompatActivity {
                         eventAdapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_LONG).show();
                     }
-
                 }
                 break;
-
         }
     }
+
     private void init() {
         listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
         listEvents.add(new Event("likey","memo",R.drawable.backg_2_mini));
         listEvents.add(new Event("numnum","owewdsdmo",R.drawable.backg_3_mini));
     }
+
     public List<Event> getListEvents(){
         return listEvents;
     }
+
     public class EventAdapter extends ArrayAdapter<Event> {
 
         private int resourceId;
@@ -156,40 +154,4 @@ public class MainActivity extends AppCompatActivity {
             return view;
         }
     }
-
-
-    /*
-    public static Bitmap CenterSquareScaleBitmaap(Bitmap bitmap, int edgeLength)
-    {
-        if(null==bitmap||0==edgeLength)
-        {
-            return null;
-        }
-        Bitmap result=bitmap;
-        int widthOrg=bitmap.getWidth();
-        int heightOrg=bitmap.getHeight();
-        if(widthOrg>edgeLength&&heightOrg>edgeLength)
-        {
-            int longerEdge=(int)(edgeLength*Math.max(widthOrg,heightOrg)/Math.min(widthOrg,heightOrg));
-            int scaledWidth=widthOrg>heightOrg?longerEdge:edgeLength;
-            int scaledHeight=widthOrg>heightOrg?edgeLength:longerEdge;
-            Bitmap scaledBitmap;
-            try{
-                scaledBitmap=Bitmap.createScaledBitmap(bitmap,scaledWidth,scaledHeight,true);
-            }catch (Exception e){
-                return null;
-            }
-            int xTopLeft=(scaledWidth-edgeLength)/2;
-            int yTopLeft=(scaledHeight-edgeLength)/2;
-            try{
-                result=Bitmap.createBitmap(scaledBitmap,xTopLeft,yTopLeft,edgeLength,edgeLength);
-                scaledBitmap.recycle();
-            }catch (Exception e) {
-                return null;
-            }
-        }
-        return result;
-    }
-     */
-
 }

@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.itime.data.Event;
+
 public class EventShowActivity extends AppCompatActivity {
 
     public static final int RESULT_SHOW_OK = 701;

@@ -1,13 +1,12 @@
 package com.example.itime;
 
-
-import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -15,12 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
-import java.sql.Time;
 import java.util.Calendar;
 
 
@@ -73,10 +69,10 @@ public class CustomTimePickerDialogFragment extends DialogFragment implements Ti
             ensureTimeButton.setVisibility(View.VISIBLE);
 
             ViewGroup mContainer = (ViewGroup) timePicker.getChildAt(0);
-
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -91,12 +87,12 @@ public class CustomTimePickerDialogFragment extends DialogFragment implements Ti
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void returnSelectedTimeUnderLOLLIPOP() {
         //bug3:5.0上超过可选区间的日期依然能选中,所以要手动校验.5.1上已解决，但是为了与5.0保持一致，也采用确定菜单返回日期
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Calendar selectedTime = Calendar.getInstance();
-
 
             Resources systemResources = Resources.getSystem();
             int hourNumberPickerId = systemResources.getIdentifier("hour", "id", "android");
@@ -105,19 +101,17 @@ public class CustomTimePickerDialogFragment extends DialogFragment implements Ti
 
             NumberPicker minuteNumberPicker = (NumberPicker) timePicker.findViewById(minuteNumberPickerId);
 
-/*
             selectedTime.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,timePicker.getHour(), timePicker.getMinute());
             selectedTime.set(Calendar.MILLISECOND,0);
         }
-        if (onSelectedTimeListener != null) {
-            onSelectedTimeListener.onSelectedTime(timePicker.getHour(),timePicker.getMinute());
+            if (onSelectedTimeListener != null) {
+                onSelectedTimeListener.onSelectedTime(timePicker.getHour(), timePicker.getMinute());
 
- */
+
         }
+
         dismiss();
     }
-
-
 
     @Override
     public void onDestroyView() {
@@ -150,6 +144,4 @@ public class CustomTimePickerDialogFragment extends DialogFragment implements Ti
         }
         dismiss();
     }
-
-
 }

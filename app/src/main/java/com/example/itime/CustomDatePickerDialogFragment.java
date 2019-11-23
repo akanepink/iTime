@@ -39,9 +39,6 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         setCancelable(false);
         Bundle bundle = getArguments();
         currentDate = (Calendar) bundle.getSerializable(CURRENT_DATE);
-
-        //datePicker.updateDate(2020,2,12);
-        //Date date=currentDate.getTime();
     }
 
 
@@ -76,7 +73,7 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         super.onViewCreated(view, savedInstanceState);
         if (view != null) {
             datePicker = view.findViewById(R.id.time_picker_view);
-            datePicker.updateDate(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
+            //datePicker.updateDate(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
             backButton = view.findViewById(R.id.button_date_back);
             backButton.setOnClickListener(this);
             ensureButton = view.findViewById(R.id.button_date_ensure);

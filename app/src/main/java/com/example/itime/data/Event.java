@@ -1,9 +1,4 @@
-package com.example.itime;
-
-
-import android.graphics.drawable.Drawable;
-
-import androidx.core.content.ContextCompat;
+package com.example.itime.data;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -81,7 +76,7 @@ public class Event implements Serializable {
         return "";
     }
 
-    public String timeToString() throws Exception {
+    public String timeToString()  {
         try {
             if (calendar == null) {
                 return "";

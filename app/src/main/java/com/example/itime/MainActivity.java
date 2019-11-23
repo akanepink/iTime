@@ -8,10 +8,12 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,14 +23,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.itime.data.Event;
+import com.example.itime.data.EventSaver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton buttonAdd;
     private List<Event> listEvents= new ArrayList<>();
     private EventAdapter eventAdapter;
+    private Calendar nowSystemTime=Calendar.getInstance();
+    EventSaver eventSaver;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        eventSaver.save();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerEvents=(ViewPager)this.findViewById(R.id.view_pager_event_show);
         buttonAdd=(FloatingActionButton)this.findViewById(R.id.floating_action_button_add);
-
-        init();
+        eventSaver=new EventSaver(this);
+        listEvents=eventSaver.load();
+        if(listEvents.size()==0) {
+            init();
+        }
         eventAdapter=new EventAdapter(MainActivity.this,R.layout.list_view_item_event,listEvents);
         final ListView listViewEvents=(ListView)this.findViewById(R.id.list_view_event);
         listViewEvents.setAdapter(eventAdapter);
@@ -80,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -105,13 +117,14 @@ public class MainActivity extends AppCompatActivity {
                         listEvents.get(position).setMemo(newEditEvent.getMemo());
                         listEvents.get(position).setCalendar(newEditEvent.getCalendar());
                         eventAdapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this,newEditEvent.timeToString(),Toast.LENGTH_SHORT).show();
 
                     }
                 }
                 if(resultCode==RESULT_CODE_DELETE_OK)
                 {
                     int deletePosition=data.getIntExtra("deletePosition",0);
-                    Toast.makeText(MainActivity.this,"+++"+deletePosition,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this,"+++"+deletePosition,Toast.LENGTH_SHORT).show();
                     if(deletePosition>=0)
                     {
                         listEvents.remove(deletePosition);
@@ -123,10 +136,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void init() {
         listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
         listEvents.add(new Event("likey","memo",R.drawable.backg_2_mini));
         listEvents.add(new Event("numnum","owewdsdmo",R.drawable.backg_3_mini));
+
     }
 
     public List<Event> getListEvents(){
@@ -136,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
     public class EventAdapter extends ArrayAdapter<Event> {
 
         private int resourceId;
+        private ImageView imageViewEventCover;
 
         public EventAdapter(Context context, int resource, List<Event> objects) {
             super(context, resource, objects);
@@ -147,11 +163,37 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             Event event = getItem(position);//获取当前项的实例
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
-            ((ImageView) view.findViewById(R.id.image_view_event_cover)).setImageResource(event.getResourceId());
+            imageViewEventCover=((ImageView) view.findViewById(R.id.image_view_event_cover));
+            imageViewEventCover.setImageResource(event.getResourceId());
+
+            Bitmap bitmap = setTextToImg("倒计时",position);
+            imageViewEventCover.setImageBitmap(bitmap);
             ((TextView) view.findViewById(R.id.text_view_event_title)).setText(event.getTitle());
             ((TextView) view.findViewById(R.id.text_view_event_date)).setText(event.calendarToString());
             ((TextView) view.findViewById(R.id.text_view_event_memo)).setText(event.getMemo());
             return view;
         }
+
+        /**
+         * 文字绘制在图片上，并返回bitmap对象
+         */
+        private Bitmap setTextToImg(String text,int position) {
+            //BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(R.drawable.backg_1);
+            //BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(R.drawable.backg_1_mini);
+            BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(EventAdapter.this.getItem(position).getResourceId());
+
+            Bitmap bitmap = icon.getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            // 抗锯齿
+            paint.setAntiAlias(true);
+            // 防抖动
+            paint.setDither(true);
+            paint.setTextSize(100);
+            paint.setColor(Color.parseColor("#ffffff"));
+            canvas.drawText(text,(bitmap.getWidth() / 5),(bitmap.getHeight() / 2), paint);
+            return bitmap;
+        }
+
     }
 }

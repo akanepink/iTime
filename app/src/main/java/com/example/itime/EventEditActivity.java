@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.itime.data.Event;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -63,7 +65,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
 
                 if(receiveEvent!=null) {
                     if(dateChangeFlag==true)
-                    {receiveEvent.getCalendar().set(year,month,day);}
+                    {receiveEvent.getCalendar().set(year,month,day,hour,minute);}
                     receiveEvent.setTitle(editTextTitle.getText().toString());
                     receiveEvent.setMemo(editTextMemo.getText().toString());
 
@@ -80,7 +82,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
                     Bundle newBundle=new Bundle();
 
                     Calendar newCalendar=Calendar.getInstance();
-                    newCalendar.set(year,month,day);
+                    newCalendar.set(year,month,day,hour,minute);
                     Event newEvent=new Event(editTextTitle.getText().toString(),editTextMemo.getText().toString(),newCalendar);
 
                     newBundle.putSerializable("newEvent",newEvent);
@@ -180,12 +182,15 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
 
     private void showTimePickDialog(){
         Calendar nowCalendar=Calendar.getInstance();
-        new TimePickerDialog(EventEditActivity.this, new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog timePickerDialog=new TimePickerDialog(EventEditActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 Toast.makeText(EventEditActivity.this,"Hour:"+hourOfDay+"Minute:"+minute,Toast.LENGTH_SHORT).show();
             }
-        },nowCalendar.get(Calendar.HOUR_OF_DAY),nowCalendar.get(Calendar.MINUTE),true).show();
+        },nowCalendar.get(Calendar.HOUR_OF_DAY),nowCalendar.get(Calendar.MINUTE),true);
+
+        timePickerDialog.getContext().setTheme(R.style.HTimePickerStyle);
+        timePickerDialog.show();
     };
 
     @Override

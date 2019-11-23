@@ -3,15 +3,20 @@ package com.example.itime;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.itime.data.Event;
+
+import java.util.Calendar;
 
 public class EventShowActivity extends AppCompatActivity {
 
@@ -23,7 +28,8 @@ public class EventShowActivity extends AppCompatActivity {
     private ImageButton buttonShowBack,buttonShowFull,buttonShowDelete;
     private ImageButton buttonShowShare,buttonShowEdit;
     private TextView textViewShowTitle,textViewShowDate,textViewShowCountdown;
-    private Event event;
+    private Event eventShow;
+    private Calendar nowSystemTime;
     private int position;
 
 
@@ -40,17 +46,23 @@ public class EventShowActivity extends AppCompatActivity {
         textViewShowDate=(TextView)this.findViewById(R.id.text_view_show_event_date);
         textViewShowCountdown=(TextView)this.findViewById(R.id.text_view_show_event_countdown);
 
-
+        nowSystemTime=(Calendar)getIntent().getExtras().getSerializable("nowTime");
         position=getIntent().getIntExtra("position",-1);
         //接收序列化的Event
-        event=(Event)getIntent().getExtras().getSerializable("event");
-        textViewShowTitle.setText(event.getTitle());
-        textViewShowDate.setText(event.calendarToString());
+        eventShow=(Event)getIntent().getExtras().getSerializable("event");
+        textViewShowTitle.setText(eventShow.getTitle());
+        textViewShowDate.setText(eventShow.calendarToString());
+        textViewShowCountdown.setText(getTimeDiff());
+
+        //开始
+        handler.sendEmptyMessage(1);
 
         buttonShowBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventShowActivity.this.finish();
+                //停止
+                handler.removeCallbacksAndMessages(null);
             }
         });
 
@@ -87,7 +99,8 @@ public class EventShowActivity extends AppCompatActivity {
                                 setResult(RESULT_CODE_DELETE_OK,intent);
                                 //关闭该activity
                                 EventShowActivity.this.finish();
-
+                                //停止
+                                handler.removeCallbacksAndMessages(null);
                             }})
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
@@ -104,7 +117,7 @@ public class EventShowActivity extends AppCompatActivity {
                 Intent intent=new Intent(EventShowActivity.this,EventEditActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putInt("position",position);
-                bundle.putSerializable("event", event);//序列化
+                bundle.putSerializable("event", eventShow);//序列化
                 intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent, REQUEST_CODE_EDIT_BOOK);
                 //EventShowActivity.this.finish();
@@ -129,8 +142,45 @@ public class EventShowActivity extends AppCompatActivity {
                     setResult( RESULT_CODE_EDIT_SHOW_OK,newIntent);
                     //关闭该activity
                     EventShowActivity.this.finish();
-
+                    //停止
+                    handler.removeCallbacksAndMessages(null);
                 }
         }
     }
+
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+               textViewShowCountdown.setText(getTimeDiff());
+                sendEmptyMessageDelayed(1,1000);
+            }
+        }
+    };
+
+
+
+
+    private String getTimeDiff()
+    {
+        long cTime=eventShow.getCalendar().getTimeInMillis()-Calendar.getInstance().getTimeInMillis();
+        long sTime=cTime/1000;//时间差，单位：秒
+        long mTime=sTime/60;
+        long hTime=mTime/60;
+        long dTime=hTime/24;
+        if(sTime>=0)
+            return "还剩"+dTime +"天 "+hTime%24 +"小时 "+ mTime%60 +"分钟 "+sTime%60 +"秒";
+        else {
+            sTime*=(-1);
+            mTime*=(-1);
+            hTime*=(-1);
+            dTime*=(-1);
+            return "已经" + dTime + "天"+hTime%24 +"小时 "+ mTime%60 +"分钟 "+sTime%60 +"秒";
+        }
+    }
+
+
+
 }

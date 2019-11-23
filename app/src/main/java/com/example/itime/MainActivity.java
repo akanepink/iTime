@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 //利用Bundle传递序列化的Event
                 Intent intent=new Intent(MainActivity.this,EventShowActivity.class);
                 Bundle bundle=new Bundle();
+                bundle.putSerializable("nowTime",nowSystemTime);
                 bundle.putInt("position",position);
                 bundle.putSerializable("event", listEvents.get(position));//序列化
                 intent.putExtras(bundle);//发送数据
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             imageViewEventCover=((ImageView) view.findViewById(R.id.image_view_event_cover));
             imageViewEventCover.setImageResource(event.getResourceId());
 
-            Bitmap bitmap = setTextToImg("倒计时",position);
+            Bitmap bitmap = setTextToImg(getDateDiff(position),position);
             imageViewEventCover.setImageBitmap(bitmap);
             ((TextView) view.findViewById(R.id.text_view_event_title)).setText(event.getTitle());
             ((TextView) view.findViewById(R.id.text_view_event_date)).setText(event.calendarToString());
@@ -178,8 +180,6 @@ public class MainActivity extends AppCompatActivity {
          * 文字绘制在图片上，并返回bitmap对象
          */
         private Bitmap setTextToImg(String text,int position) {
-            //BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(R.drawable.backg_1);
-            //BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(R.drawable.backg_1_mini);
             BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(EventAdapter.this.getItem(position).getResourceId());
 
             Bitmap bitmap = icon.getBitmap().copy(Bitmap.Config.ARGB_8888, true);
@@ -191,8 +191,28 @@ public class MainActivity extends AppCompatActivity {
             paint.setDither(true);
             paint.setTextSize(100);
             paint.setColor(Color.parseColor("#ffffff"));
-            canvas.drawText(text,(bitmap.getWidth() / 5),(bitmap.getHeight() / 2), paint);
+            int x=text.length()*2-1;
+            canvas.drawText(text, (bitmap.getWidth()/x), (bitmap.getHeight() / 2), paint);
+
             return bitmap;
+        }
+
+        private String getDateDiff(int position)
+        {
+            long cTime=this.getItem(position).getCalendar().getTimeInMillis()-nowSystemTime.getTimeInMillis();
+            long sTime=cTime/1000;//时间差，单位：秒
+            /*
+            long mTime=sTime/60;
+            long hTime=mTime/60;
+            long dTime=hTime/24;
+             */
+            long dTime=cTime/(1000*60*60*24);
+            if(sTime>0)
+                return "还剩"+dTime +"天";
+            else {
+                dTime*=(-1);
+                return "已经" + dTime + "天";
+            }
         }
 
     }

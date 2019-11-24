@@ -7,8 +7,7 @@
         <item
             android:id="@+id/menu_home"
             android:icon="@mipmap/ic_stat_home"
-            android:title="计时"
-            app:actionLayout="@layout/bage_hint" />
+            android:title="计时"/>
 
         <item
             android:id="@+id/menu_label"

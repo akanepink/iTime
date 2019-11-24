@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,21 +32,24 @@ public class EventShowActivity extends AppCompatActivity {
     private Event eventShow;
     private Calendar nowSystemTime;
     private int position;
+    private int colorEdit;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_event_show);
-        buttonShowBack=(ImageButton)this.findViewById(R.id.image_button_show_back);
-        buttonShowFull=(ImageButton)this.findViewById(R.id.image_button_show_full);
-        buttonShowDelete=(ImageButton)this.findViewById(R.id.image_button_show_delete);
-        buttonShowShare=(ImageButton)this.findViewById(R.id.image_button_show_share);
-        buttonShowEdit=(ImageButton)this.findViewById(R.id.image_button_show_edit);
-        textViewShowTitle=(TextView)this.findViewById(R.id.text_view_show_event_title);
-        textViewShowDate=(TextView)this.findViewById(R.id.text_view_show_event_date);
-        textViewShowCountdown=(TextView)this.findViewById(R.id.text_view_show_event_countdown);
+        buttonShowBack=this.findViewById(R.id.image_button_show_back);
+        buttonShowFull=this.findViewById(R.id.image_button_show_full);
+        buttonShowDelete=this.findViewById(R.id.image_button_show_delete);
+        buttonShowShare=this.findViewById(R.id.image_button_show_share);
+        buttonShowEdit=this.findViewById(R.id.image_button_show_edit);
+        textViewShowTitle=this.findViewById(R.id.text_view_show_event_title);
+        textViewShowDate=this.findViewById(R.id.text_view_show_event_date);
+        textViewShowCountdown=this.findViewById(R.id.text_view_show_event_countdown);
 
+        colorEdit=getIntent().getExtras().getInt("colorBackg");
         nowSystemTime=(Calendar)getIntent().getExtras().getSerializable("nowTime");
         position=getIntent().getIntExtra("position",-1);
         //接收序列化的Event
@@ -95,7 +99,6 @@ public class EventShowActivity extends AppCompatActivity {
                                 //传回删除的position
                                 Intent intent=new Intent();
                                 intent.putExtra("deletePosition",deletePosition);
-                                //Toast.makeText(EventShowActivity.this,"+++"+position,Toast.LENGTH_SHORT).show();
                                 setResult(RESULT_CODE_DELETE_OK,intent);
                                 //关闭该activity
                                 EventShowActivity.this.finish();
@@ -116,6 +119,7 @@ public class EventShowActivity extends AppCompatActivity {
 
                 Intent intent=new Intent(EventShowActivity.this,EventEditActivity.class);
                 Bundle bundle=new Bundle();
+                bundle.putInt("colorBackg",colorEdit);
                 bundle.putInt("position",position);
                 bundle.putSerializable("event", eventShow);//序列化
                 intent.putExtras(bundle);//发送数据
@@ -180,7 +184,4 @@ public class EventShowActivity extends AppCompatActivity {
             return "已经" + dTime + "天"+hTime%24 +"小时 "+ mTime%60 +"分钟 "+sTime%60 +"秒";
         }
     }
-
-
-
 }

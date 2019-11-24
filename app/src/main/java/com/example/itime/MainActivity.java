@@ -3,19 +3,25 @@ package com.example.itime;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,7 +32,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,25 +44,25 @@ import com.example.itime.data.EventSaver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
 
+public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_NEW_EVENT = 901;
     public static final int REQUEST_CODE_SHOW_EVENT = 902;
     public static final int RESULT_CODE_EDIT_OK = 703;
     public static final int RESULT_CODE_DELETE_OK = 704;
     public static final int RESULT_CODE_EDIT_SHOW_OK = 705;
     private ViewPager viewPagerEvents;
-    private FloatingActionButton buttonAdd, buttonMenu;
+    private FloatingActionButton  buttonAdd,buttonMenu;
     private List<Event> listEvents = new ArrayList<>();
     private EventAdapter eventAdapter;
     private Calendar nowSystemTime = Calendar.getInstance();
     EventSaver eventSaver;
     NavigationView navigationView;
+    private int colorEdit=-1;
     //DrawerLayout drawerLayout;
 
     @Override
@@ -65,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //initWindow();
@@ -106,13 +115,34 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        View headerView = navigationView.getHeaderView(0);
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"此功能未完善",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 //在这里处理item的点击事件
                 if(item.getTitle().equals("主题色"))
                 {
+                    ColorPickerDialog colorPickerDialog=new ColorPickerDialog(MainActivity.this, "主题色", new ColorPickerDialog.OnColorChangedListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void colorChanged(int color) {
+                            Toast.makeText(MainActivity.this,"ok",Toast.LENGTH_SHORT).show();
+                            //需要将int color转换成color id
+                            //buttonAdd.setBackgroundTintList(getColorStateList(R.color.black));
+                            buttonAdd.setBackgroundColor(color);
+                            colorEdit=color;
 
+                        }
+                    });
+                    colorPickerDialog.show();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_LONG).show();
@@ -127,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EventEditActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putInt("colorBackg",colorEdit);
                 bundle.putSerializable("event", null);//序列化
                 intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent, REQUEST_CODE_NEW_EVENT);
@@ -139,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 //利用Bundle传递序列化的Event
                 Intent intent = new Intent(MainActivity.this, EventShowActivity.class);
                 Bundle bundle = new Bundle();
+
+                bundle.putInt("colorBackg",colorEdit);
                 bundle.putSerializable("nowTime", nowSystemTime);
                 bundle.putInt("position", position);
                 bundle.putSerializable("event", listEvents.get(position));//序列化
@@ -214,8 +247,6 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_CODE_SHOW_EVENT:
                 if(resultCode== RESULT_CODE_EDIT_SHOW_OK)
                 {
-                    //Toast.makeText(MainActivity.this,"ok",Toast.LENGTH_SHORT).show();//调试用
-                    //需要修改
                     Event newEditEvent=(Event)data.getExtras().getSerializable("newEditEvent");
                     int position=data.getExtras().getInt("position",-1);
                     if(position>=0){
@@ -230,7 +261,6 @@ public class MainActivity extends AppCompatActivity {
                 if(resultCode==RESULT_CODE_DELETE_OK)
                 {
                     int deletePosition=data.getIntExtra("deletePosition",0);
-                    //Toast.makeText(MainActivity.this,"+++"+deletePosition,Toast.LENGTH_SHORT).show();
                     if(deletePosition>=0)
                     {
                         listEvents.remove(deletePosition);
@@ -244,9 +274,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
+        /*
         listEvents.add(new Event("likey","memo",R.drawable.backg_2_mini));
         listEvents.add(new Event("numnum","owewdsdmo",R.drawable.backg_3_mini));
-
+        */
     }
 
     public List<Event> getListEvents(){
@@ -268,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             Event event = getItem(position);//获取当前项的实例
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
-            imageViewEventCover=((ImageView) view.findViewById(R.id.image_view_event_cover));
+            imageViewEventCover=(view.findViewById(R.id.image_view_event_cover));
             imageViewEventCover.setImageResource(event.getResourceId());
 
             Bitmap bitmap = setTextToImg(getDateDiff(position),position);

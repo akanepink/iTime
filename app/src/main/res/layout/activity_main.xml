@@ -40,8 +40,7 @@
 
 
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+<!--     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,11 +51,27 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:tint="#FFFFFF"
-        app:backgroundTint="@color/colorMain"
+        app:backgroundTint="@color/transparent"
         app:elevation="5dp"
         app:fabSize="normal"
         app:rippleColor="#e7d161"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@mipmap/ic_stat_add" />   -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_add"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorMain"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/add"
+        tools:ignore="VectorDrawableCompat" />
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
@@ -72,7 +87,6 @@
         android:id="@+id/floating_action_button_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="2dp"
@@ -82,5 +96,37 @@
         app:backgroundTint="@color/transparent"
         app:srcCompat="@drawable/ic_stat_menu"
         tools:ignore="VectorDrawableCompat" />
+<!--
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_add"
+        android:layout_width="37dp"
+        android:layout_height="41dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="54dp"
+        android:layout_marginRight="54dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/button_shape"
+        android:clickable="true"
+        android:scaleX="@android:dimen/app_icon_size"
+        android:scaleY="@android:dimen/app_icon_size"
+        android:tint="#FFFFFF"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/add"
+        tools:ignore="VectorDrawableCompat" />
 
+    <ImageButton
+        android:id="@+id/floating_action_button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="100dp"
+        android:background="@drawable/button_shape"
+        app:srcCompat="@drawable/add"
+        tools:ignore="VectorDrawableCompat" />
+    -->
 </RelativeLayout>

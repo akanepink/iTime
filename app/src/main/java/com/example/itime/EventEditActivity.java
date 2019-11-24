@@ -1,10 +1,12 @@
 package com.example.itime;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,21 +33,28 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
    // private int year,month,day;
     public static final int RESULT_CODE_EDIT_OK = 703;
     private boolean dateChangeFlag=false;
+    private boolean colorChangeFlag=false;
+    private int colorBackg;
+    private ConstraintLayout editLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
 
-        buttonBack=(ImageButton)this.findViewById(R.id.image_button_back);
-        buttonOk=(ImageButton)this.findViewById(R.id.button_ok);
-        buttonDate=(Button)this.findViewById(R.id.button_choose_date);
-        buttonRepeat=(Button)this.findViewById(R.id.button_choose_repeat);
-        buttonPic=(Button)this.findViewById(R.id.button_choose_picture);
-        buttonLabel=(Button)this.findViewById(R.id.button_choose_label);
-        editTextTitle=(EditText)this.findViewById(R.id.edit_text_title);
-        editTextMemo=(EditText)this.findViewById(R.id.edit_text_memo);
+        buttonBack=this.findViewById(R.id.image_button_back);
+        buttonOk=this.findViewById(R.id.button_ok);
+        buttonDate=this.findViewById(R.id.button_choose_date);
+        buttonRepeat=this.findViewById(R.id.button_choose_repeat);
+        buttonPic=this.findViewById(R.id.button_choose_picture);
+        buttonLabel=this.findViewById(R.id.button_choose_label);
+        editTextTitle=this.findViewById(R.id.edit_text_title);
+        editTextMemo=this.findViewById(R.id.edit_text_memo);
 
+        editLayout=this.findViewById(R.id.constraint_edit_layout);
+        colorBackg=getIntent().getExtras().getInt("colorBackg");
+        if(colorBackg!=-1)
+            editLayout.setBackgroundColor(colorBackg);
 
         final int position=getIntent().getExtras().getInt("position",-1);
         receiveEvent=(Event)getIntent().getExtras().getSerializable("event");
@@ -92,7 +101,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
-
 
         //返回按钮的响应事件
         //总是返回到show的layout界面       如果是新增 则返回到主界面
@@ -207,7 +215,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // 指定一个日期
         try {
-            Date date = dateFormat.parse(String.valueOf(this.year) + "-" + String.valueOf(month) + "-" + String.valueOf(day));
+            Date date = dateFormat.parse(this.year + "-" + month+ "-" + day);
             updateDate.setTime(date);
         }catch (Exception e)
         {
@@ -230,7 +238,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:ss");
         // 指定一个日期
         try {
-            Date date = dateFormat.parse(String.valueOf(this.hour) + ":" + String.valueOf(this.minute) );
+            Date date = dateFormat.parse(this.hour + ":" + this.minute );
             updateDate.setTime(date);
         }catch (Exception e)
         {

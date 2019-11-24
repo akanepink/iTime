@@ -17,14 +17,15 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager_event_show"
             android:layout_width="match_parent"
-            android:layout_height="181dp">
+            android:layout_height="181dp"
+            android:background="@drawable/backg_1_mini">
 
         </androidx.viewpager.widget.ViewPager>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar_in_main"
             android:layout_width="match_parent"
-            android:layout_height="11dp"
+            android:layout_height="4dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
@@ -55,4 +56,30 @@
         app:fabSize="normal"
         app:rippleColor="#e7d161"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:fitsSystemWindows="true"
+        android:visibility="invisible"
+        app:headerLayout="@layout/header_layout"
+        app:menu="@menu/new_menu" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/ic_stat_menu"
+        android:clickable="true"
+        app:backgroundTint="@color/transparent"
+        app:srcCompat="@drawable/ic_stat_menu"
+        tools:ignore="VectorDrawableCompat" />
+
 </RelativeLayout>

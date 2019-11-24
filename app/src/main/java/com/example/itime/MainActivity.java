@@ -2,7 +2,11 @@ package com.example.itime;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -11,12 +15,15 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -27,6 +34,8 @@ import android.widget.Toast;
 import com.example.itime.data.Event;
 import com.example.itime.data.EventSaver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,11 +49,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int RESULT_CODE_DELETE_OK = 704;
     public static final int RESULT_CODE_EDIT_SHOW_OK = 705;
     private ViewPager viewPagerEvents;
-    private FloatingActionButton buttonAdd;
-    private List<Event> listEvents= new ArrayList<>();
+    private FloatingActionButton buttonAdd, buttonMenu;
+    private List<Event> listEvents = new ArrayList<>();
     private EventAdapter eventAdapter;
-    private Calendar nowSystemTime=Calendar.getInstance();
+    private Calendar nowSystemTime = Calendar.getInstance();
     EventSaver eventSaver;
+    NavigationView navigationView;
+    //DrawerLayout drawerLayout;
 
     @Override
     protected void onDestroy() {
@@ -55,27 +66,70 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        viewPagerEvents=(ViewPager)this.findViewById(R.id.view_pager_event_show);
-        buttonAdd=(FloatingActionButton)this.findViewById(R.id.floating_action_button_add);
-        eventSaver=new EventSaver(this);
-        listEvents=eventSaver.load();
-        if(listEvents.size()==0) {
+        //initWindow();
+
+        viewPagerEvents = this.findViewById(R.id.view_pager_event_show);
+        buttonAdd = this.findViewById(R.id.floating_action_button_add);
+        buttonMenu = this.findViewById(R.id.floating_action_button_menu);
+        navigationView = this.findViewById(R.id.navigation_view);
+       // drawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
+        navigationView.setItemIconTintList(null);
+        eventSaver = new EventSaver(this);
+        listEvents = eventSaver.load();
+        if (listEvents.size() == 0) {
             init();
         }
-        eventAdapter=new EventAdapter(MainActivity.this,R.layout.list_view_item_event,listEvents);
-        final ListView listViewEvents=(ListView)this.findViewById(R.id.list_view_event);
+        eventAdapter = new EventAdapter(MainActivity.this, R.layout.list_view_item_event, listEvents);
+        final ListView listViewEvents = this.findViewById(R.id.list_view_event);
         listViewEvents.setAdapter(eventAdapter);
+
+        buttonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                //点击菜单，跳出侧滑菜单
+                if (drawerLayout.isDrawerOpen(navigationView)) {
+                    drawerLayout.closeDrawer(navigationView);
+                } else {
+                    drawerLayout.openDrawer(navigationView);
+                }*/
+
+                if(navigationView.getVisibility()==View.INVISIBLE) {
+                    navigationView.setVisibility(View.VISIBLE);
+                }
+                else
+                    navigationView.setVisibility(View.INVISIBLE);
+            }
+
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                //在这里处理item的点击事件
+                if(item.getTitle().equals("主题色"))
+                {
+
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_LONG).show();
+                }
+                //drawerLayout.closeDrawers();
+                return true;
+            }
+        });
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,EventEditActivity.class);
-                Bundle bundle=new Bundle();
+                Intent intent = new Intent(MainActivity.this, EventEditActivity.class);
+                Bundle bundle = new Bundle();
                 bundle.putSerializable("event", null);//序列化
                 intent.putExtras(bundle);//发送数据
-                startActivityForResult(intent,REQUEST_CODE_NEW_EVENT);
+                startActivityForResult(intent, REQUEST_CODE_NEW_EVENT);
             }
         });
 
@@ -83,16 +137,66 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //利用Bundle传递序列化的Event
-                Intent intent=new Intent(MainActivity.this,EventShowActivity.class);
-                Bundle bundle=new Bundle();
-                bundle.putSerializable("nowTime",nowSystemTime);
-                bundle.putInt("position",position);
+                Intent intent = new Intent(MainActivity.this, EventShowActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("nowTime", nowSystemTime);
+                bundle.putInt("position", position);
                 bundle.putSerializable("event", listEvents.get(position));//序列化
                 intent.putExtras(bundle);//发送数据
                 startActivityForResult(intent, REQUEST_CODE_SHOW_EVENT);
             }
         });
     }
+
+/*
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void initWindow() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        NavigationView navigationview = (NavigationView) findViewById(R.id.navigation_view);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        setSupportActionBar(toolbar);//将toolbar与ActionBar关联
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, 0, 0);
+        drawer.setDrawerListener(toggle);//初始化状态
+        toggle.syncState();
+
+
+        //获取xml头布局view
+        View headerView = navigationview.getHeaderView(0);
+        //添加头布局的另外一种方式
+        //View headview=navigationview.inflateHeaderView(R.layout.navigationview_header);
+
+        //寻找头部里面的控件
+        ImageView imageView = headerView.findViewById(R.id.person);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "点击了头像", Toast.LENGTH_LONG).show();
+            }
+        });
+        navigationview.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        });
+
+        //设置条目点击监听
+        navigationview.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                //安卓
+                Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                //设置哪个按钮被选中
+//                menuItem.setChecked(true);
+                //关闭侧边栏
+//                drawer.closeDrawers();
+                return false;
+            }
+        });
+    }
+*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -137,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     private void init() {
         listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
@@ -214,6 +317,7 @@ public class MainActivity extends AppCompatActivity {
                 return "已经" + dTime + "天";
             }
         }
-
     }
+
+
 }

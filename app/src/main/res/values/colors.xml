@@ -14,7 +14,7 @@
     <color name="cyan">#00FFFF</color>
     <color name="gray">#ff888888</color>
     <color name="green">#ff00ff00</color>
-    <color name="ltgray">#ffcccccc</color>
+    <color name="ltgray">#CCCCCC</color>
     <color name="magenta">#ffff00ff</color>
     <color name="red">#ffff0000</color>
     <color name="transparent">#00000000</color>

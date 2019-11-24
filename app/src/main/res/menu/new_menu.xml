@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_home"
+            android:icon="@mipmap/ic_stat_home"
+            android:title="计时"
+            app:actionLayout="@layout/bage_hint" />
+
+        <item
+            android:id="@+id/menu_label"
+            android:icon="@mipmap/ic_stat_menu_label"
+            android:title="标签"/>
+
+        <item
+            android:id="@+id/menu_widgets"
+            android:icon="@mipmap/ic_stat_widgets"
+            android:title="小部件"/>
+
+        <item
+            android:id="@+id/menu_color"
+            android:icon="@mipmap/ic_stat_color"
+            android:title="主题色"/>
+
+        <item
+            android:id="@+id/menu_stars"
+            android:icon="@mipmap/ic_stat_stars"
+            android:title="高级版"/>
+    </group>
+
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_settings"
+            android:icon="@mipmap/ic_stat_settings"
+            android:title="设置"/>
+
+        <item
+            android:id="@+id/menu_about"
+            android:icon="@mipmap/ic_stat_error"
+            android:title="关于"/>
+
+        <item
+            android:id="@+id/menu_help"
+            android:icon="@mipmap/ic_stat_announcement"
+            android:title="帮助与反馈"/>
+    </group>
+
+</menu>

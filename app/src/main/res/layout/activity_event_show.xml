@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_show_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EventShowActivity">
@@ -9,7 +10,7 @@
     <TextView
         android:id="@+id/text_view_show_event_title"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="70dp"
         android:layout_marginLeft="70dp"
@@ -17,7 +18,8 @@
         android:layout_marginEnd="70dp"
         android:layout_marginRight="70dp"
         android:text="title"
-        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +27,7 @@
     <TextView
         android:id="@+id/text_view_show_event_date"
         android:layout_width="wrap_content"
-        android:layout_height="17dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
@@ -33,6 +35,8 @@
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
         android:text="date"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_show_event_title" />
@@ -48,6 +52,8 @@
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:text="countdown"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_show_event_date" />

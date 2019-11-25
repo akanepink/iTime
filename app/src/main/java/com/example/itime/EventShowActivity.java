@@ -1,11 +1,14 @@
 package com.example.itime;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,8 +36,10 @@ public class EventShowActivity extends AppCompatActivity {
     private Calendar nowSystemTime;
     private int position;
     private int colorEdit;
+    private ConstraintLayout constraintShowLayout;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,7 @@ public class EventShowActivity extends AppCompatActivity {
         textViewShowTitle=this.findViewById(R.id.text_view_show_event_title);
         textViewShowDate=this.findViewById(R.id.text_view_show_event_date);
         textViewShowCountdown=this.findViewById(R.id.text_view_show_event_countdown);
+        constraintShowLayout=this.findViewById(R.id.constraint_show_layout);
 
         colorEdit=getIntent().getExtras().getInt("colorBackg");
         nowSystemTime=(Calendar)getIntent().getExtras().getSerializable("nowTime");
@@ -57,6 +63,7 @@ public class EventShowActivity extends AppCompatActivity {
         textViewShowTitle.setText(eventShow.getTitle());
         textViewShowDate.setText(eventShow.calendarToString());
         textViewShowCountdown.setText(getTimeDiff());
+        constraintShowLayout.setBackground(getResources().getDrawable(eventShow.getBackgId()));
 
         //开始
         handler.sendEmptyMessage(1);

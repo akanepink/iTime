@@ -10,26 +10,31 @@ public class Event implements Serializable {
     private String memo;
     private Calendar calendar=Calendar.getInstance();
     private int resourceId;
-
-
-    public Event(String title, String memo, Calendar calendar, int resourceId) {
-        this.title = title;
-        this.memo = memo;
-        this.calendar = calendar;
-        this.resourceId = resourceId;
-    }
+    private int backgId;
 
     public Event(String title, String memo, Calendar calendar) {
         this.title = title;
         this.memo = memo;
         this.calendar = calendar;
     }
-
-    public Event(String title, String memo, int resourceId) {
+    public Event(String title, String memo, Calendar calendar, int resourceId,int backgId) {
         this.title = title;
         this.memo = memo;
+        this.calendar = calendar;
         this.resourceId = resourceId;
+        this.backgId=backgId;
     }
+    public int getBackgId() {
+        return backgId;
+    }
+
+    public void setBackgId(int backgId) {
+        this.backgId = backgId;
+    }
+
+
+
+
 
     public String getMemo() {
         return memo;

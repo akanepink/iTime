@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ResourceManagerInternal;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -48,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_NEW_EVENT = 901;
     public static final int REQUEST_CODE_SHOW_EVENT = 902;
@@ -63,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
     EventSaver eventSaver;
     NavigationView navigationView;
     private int colorEdit=-1;
+    private static int picNum=2;
     //DrawerLayout drawerLayout;
-
+    private Event eee;
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -74,17 +75,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //initWindow();
 
         viewPagerEvents = this.findViewById(R.id.view_pager_event_show);
         buttonAdd = this.findViewById(R.id.floating_action_button_add);
         buttonMenu = this.findViewById(R.id.floating_action_button_menu);
         navigationView = this.findViewById(R.id.navigation_view);
-       // drawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
+        //drawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
         navigationView.setItemIconTintList(null);
         eventSaver = new EventSaver(this);
         listEvents = eventSaver.load();
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
         View headerView = navigationView.getHeaderView(0);
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
                             //buttonAdd.setBackgroundTintList(getColorStateList(R.color.black));
                             buttonAdd.setBackgroundColor(color);
                             colorEdit=color;
+                            View bv = findViewById(android.R.id.title);
+                            //((View) bv.getParent()).setBackgroundColor(color);
+                            //bv.setBackgroundColor(color);
+                            //bv.getBackground().setColorFilter(color);
 
                         }
                     });
@@ -239,7 +244,17 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     //需要修改
                     Event newEvent=(Event)data.getExtras().getSerializable("newEvent");
-                    newEvent.setResourceId(R.drawable.backg_2_mini);
+                    String resourceBase="backg_";
+                    String resStr=resourceBase+picNum+"_mini";
+                    String backgStr=resourceBase+picNum;
+                    int resId=getResources().getIdentifier(resStr,"drawable",getPackageName());
+                    int backgId=getResources().getIdentifier(backgStr,"drawable",getPackageName());
+                    picNum++;
+                    if(picNum==4)
+                        picNum=1;
+                    newEvent.setResourceId(resId);
+                    newEvent.setBackgId(backgId);
+
                     getListEvents().add(newEvent);
                     eventAdapter.notifyDataSetChanged();
                 }
@@ -273,7 +288,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        listEvents.add(new Event("我的生日","开心",R.drawable.backg_1_mini));
+        Event initEvent=new Event("我的生日","开心",Calendar.getInstance());
+        initEvent.setResourceId(R.drawable.backg_1_mini);
+        initEvent.setBackgId(R.drawable.backg_1);
+        listEvents.add(initEvent);
+
         /*
         listEvents.add(new Event("likey","memo",R.drawable.backg_2_mini));
         listEvents.add(new Event("numnum","owewdsdmo",R.drawable.backg_3_mini));

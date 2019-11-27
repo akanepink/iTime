@@ -7,8 +7,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,7 +44,10 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_event_edit);
         //隐藏标题栏
         getSupportActionBar().hide();
-
+        //状态栏半透明
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         buttonBack=this.findViewById(R.id.image_button_back);
         buttonOk=this.findViewById(R.id.button_ok);
         buttonDate=this.findViewById(R.id.button_choose_date);

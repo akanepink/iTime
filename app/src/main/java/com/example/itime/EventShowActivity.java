@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,10 @@ public class EventShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_show);
         //隐藏标题栏
         getSupportActionBar().hide();
-
+        //状态栏半透明
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         buttonShowBack=this.findViewById(R.id.image_button_show_back);
         buttonShowFull=this.findViewById(R.id.image_button_show_full);
         buttonShowDelete=this.findViewById(R.id.image_button_show_delete);

@@ -70,11 +70,11 @@
 
         <ImageButton
             android:id="@+id/image_button_back"
-            android:layout_width="38dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/button_shape"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -83,11 +83,11 @@
 
         <ImageButton
             android:id="@+id/button_ok"
-            android:layout_width="37dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/button_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

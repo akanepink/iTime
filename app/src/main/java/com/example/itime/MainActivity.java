@@ -72,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //隐藏标题栏
         getSupportActionBar().hide();
+        //状态栏透明
+        if(Build.VERSION.SDK_INT >= 21){
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    |View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
 
         viewPagerEvents = this.findViewById(R.id.view_pager_event_show);
         buttonAdd = this.findViewById(R.id.floating_action_button_add);

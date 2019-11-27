@@ -33,14 +33,15 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
    // private int year,month,day;
     public static final int RESULT_CODE_EDIT_OK = 703;
     private boolean dateChangeFlag=false;
-    private boolean colorChangeFlag=false;
-    private int colorBackg;
+    private int colorBackg=-1;
     private ConstraintLayout editLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
+        //隐藏标题栏
+        getSupportActionBar().hide();
 
         buttonBack=this.findViewById(R.id.image_button_back);
         buttonOk=this.findViewById(R.id.button_ok);
@@ -152,6 +153,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
             currentDate.set(Calendar.SECOND, 0);
             currentDate.set(Calendar.MILLISECOND, 0);
             bundle.putSerializable(CustomDatePickerDialogFragment.CURRENT_DATE, currentDate);
+            bundle.putInt("color",colorBackg);
 
             fragment.setArguments(bundle);
             fragment.show(getSupportFragmentManager(), CustomDatePickerDialogFragment.class.getSimpleName());

@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="start"
->
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/linear_layout_in_main"
@@ -27,7 +32,7 @@
             android:id="@+id/tool_bar_in_main"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="?attr/colorPrimary"
+            android:background="@color/transparent"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
@@ -35,27 +40,10 @@
             android:id="@+id/list_view_event"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         </ListView>
 
-
     </LinearLayout>
-<!--     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        android:tint="#FFFFFF"
-        app:backgroundTint="@color/transparent"
-        app:elevation="5dp"
-        app:fabSize="normal"
-        app:rippleColor="#e7d161"
-        app:srcCompat="@mipmap/ic_stat_add" />   -->
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button_add"
         android:layout_width="70dp"
@@ -73,60 +61,29 @@
         tools:ignore="VectorDrawableCompat" />
 
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/ic_stat_menu"
+            android:clickable="true"
+            app:backgroundTint="@color/transparent"
+            app:srcCompat="@drawable/ic_stat_menu"
+            tools:ignore="VectorDrawableCompat" />
+
+        </RelativeLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:fitsSystemWindows="true"
-        android:visibility="invisible"
         app:headerLayout="@layout/header_layout"
         app:menu="@menu/new_menu" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@drawable/ic_stat_menu"
-        android:clickable="true"
-        app:backgroundTint="@color/transparent"
-        app:srcCompat="@drawable/ic_stat_menu"
-        tools:ignore="VectorDrawableCompat" />
-<!--
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button_add"
-        android:layout_width="37dp"
-        android:layout_height="41dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="54dp"
-        android:layout_marginRight="54dp"
-        android:layout_marginBottom="22dp"
-        android:background="@drawable/button_shape"
-        android:clickable="true"
-        android:scaleX="@android:dimen/app_icon_size"
-        android:scaleY="@android:dimen/app_icon_size"
-        android:tint="#FFFFFF"
-        app:elevation="5dp"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/add"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageButton
-        android:id="@+id/floating_action_button_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="100dp"
-        android:background="@drawable/button_shape"
-        app:srcCompat="@drawable/add"
-        tools:ignore="VectorDrawableCompat" />
-    -->
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

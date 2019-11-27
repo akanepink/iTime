@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_edit_layout"
         android:layout_width="match_parent"
-        android:layout_height="203dp"
+        android:layout_height="190dp"
         android:background="@color/colorMain">
 
         <TextView
@@ -25,6 +25,7 @@
             android:layout_marginTop="42dp"
             android:text="标题"
             android:textColor="@color/white"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +39,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/text_view_title"
             app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
@@ -48,6 +50,7 @@
             android:layout_marginTop="8dp"
             android:text="备注"
             android:textColor="@color/white"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/text_view_title"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
@@ -61,6 +64,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/text_view_memo"
             app:layout_constraintTop_toBottomOf="@+id/text_view_memo" />
 
@@ -94,11 +98,10 @@
 
     <Button
         android:id="@+id/button_choose_date"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="373dp"
         android:layout_height="60dp"
-        android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:background="@color/white"
         android:drawableLeft="@mipmap/ic_stat_date"
@@ -106,6 +109,7 @@
 
     <Button
         android:id="@+id/button_choose_repeat"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="373dp"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
@@ -116,6 +120,7 @@
 
     <Button
         android:id="@+id/button_choose_picture"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="373dp"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
@@ -126,6 +131,7 @@
 
     <Button
         android:id="@+id/button_choose_label"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="373dp"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"

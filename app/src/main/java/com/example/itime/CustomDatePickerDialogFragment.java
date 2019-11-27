@@ -32,6 +32,7 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
     private DatePicker datePicker;
     private TextView backButton;
     private TextView ensureButton;
+    private int color;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         setCancelable(false);
         Bundle bundle = getArguments();
         currentDate = (Calendar) bundle.getSerializable(CURRENT_DATE);
+        color=bundle.getInt("color");
     }
 
 
@@ -73,6 +75,8 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         super.onViewCreated(view, savedInstanceState);
         if (view != null) {
             datePicker = view.findViewById(R.id.time_picker_view);
+            if(color!=-1)
+            datePicker.setBackgroundColor(color);
             //datePicker.updateDate(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
             backButton = view.findViewById(R.id.button_date_back);
             backButton.setOnClickListener(this);

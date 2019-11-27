@@ -37,14 +37,17 @@ public class EventShowActivity extends AppCompatActivity {
     private int position;
     private int colorEdit;
     private ConstraintLayout constraintShowLayout;
+    String []arr = {"周日","周一","周二","周三","周四","周五","周六"};
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_event_show);
+        //隐藏标题栏
+        getSupportActionBar().hide();
+
         buttonShowBack=this.findViewById(R.id.image_button_show_back);
         buttonShowFull=this.findViewById(R.id.image_button_show_full);
         buttonShowDelete=this.findViewById(R.id.image_button_show_delete);
@@ -61,7 +64,9 @@ public class EventShowActivity extends AppCompatActivity {
         //接收序列化的Event
         eventShow=(Event)getIntent().getExtras().getSerializable("event");
         textViewShowTitle.setText(eventShow.getTitle());
-        textViewShowDate.setText(eventShow.calendarToString());
+        textViewShowDate.setText(eventShow.calendarToString()+" "
+                +eventShow.timeToString()+" "
+                +arr[eventShow.getCalendar().get(Calendar.DAY_OF_WEEK)-1]);
         textViewShowCountdown.setText(getTimeDiff());
         constraintShowLayout.setBackground(getResources().getDrawable(eventShow.getBackgId()));
 
@@ -176,19 +181,54 @@ public class EventShowActivity extends AppCompatActivity {
 
     private String getTimeDiff()
     {
+        String outputStr="";
         long cTime=eventShow.getCalendar().getTimeInMillis()-Calendar.getInstance().getTimeInMillis();
         long sTime=cTime/1000;//时间差，单位：秒
         long mTime=sTime/60;
         long hTime=mTime/60;
         long dTime=hTime/24;
         if(sTime>=0)
-            return "还剩"+dTime +"天 "+hTime%24 +"小时 "+ mTime%60 +"分钟 "+sTime%60 +"秒";
+        {
+            if(dTime!=0)
+                outputStr+=dTime+"天  ";
+            if((hTime%24)!=0)
+                outputStr+=hTime%24 +"小时  ";
+            if((mTime%60)!=0)
+                outputStr+= mTime%60 +"分钟  ";
+            if((sTime%60)!=0)
+                outputStr+=sTime%60 +"秒";
+        }
+
         else {
-            sTime*=(-1);
+            /*sTime*=(-1);
             mTime*=(-1);
             hTime*=(-1);
             dTime*=(-1);
-            return "已经" + dTime + "天"+hTime%24 +"小时 "+ mTime%60 +"分钟 "+sTime%60 +"秒";
+             */
+            if(dTime!=0)
+            {
+                dTime*=(-1);
+                outputStr+=dTime+"天  ";
+            }
+            if((hTime%24)!=0)
+            {
+                hTime*=(-1);
+                outputStr+=hTime%24 +"小时  ";
+            }
+
+            if((mTime%60)!=0)
+            {
+                mTime*=(-1);
+                outputStr+= mTime%60 +"分钟  ";
+            }
+
+            if((sTime%60)!=0)
+            {
+                sTime*=(-1);
+                outputStr+=sTime%60 +"秒";
+            }
+
         }
+        return outputStr;
     }
 }

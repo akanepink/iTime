@@ -3,39 +3,32 @@ package com.example.itime;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.StyleRes;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ResourceManagerInternal;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private EventAdapter eventAdapter;
     private Calendar nowSystemTime = Calendar.getInstance();
     EventSaver eventSaver;
-    NavigationView navigationView;
     private int colorEdit=-1;
     private static int picNum=2;
-    //DrawerLayout drawerLayout;
-    private Event eee;
+    private DrawerLayout drawerLayout;
+    NavigationView navigationView;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -75,17 +68,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //initWindow();
+        //隐藏标题栏
+        getSupportActionBar().hide();
 
         viewPagerEvents = this.findViewById(R.id.view_pager_event_show);
         buttonAdd = this.findViewById(R.id.floating_action_button_add);
         buttonMenu = this.findViewById(R.id.floating_action_button_menu);
         navigationView = this.findViewById(R.id.navigation_view);
-        //drawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
+        drawerLayout = this.findViewById(R.id.drawer_layout);
         navigationView.setItemIconTintList(null);
+
         eventSaver = new EventSaver(this);
         listEvents = eventSaver.load();
         if (listEvents.size() == 0) {
@@ -98,19 +92,12 @@ public class MainActivity extends AppCompatActivity {
         buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
                 //点击菜单，跳出侧滑菜单
                 if (drawerLayout.isDrawerOpen(navigationView)) {
                     drawerLayout.closeDrawer(navigationView);
                 } else {
                     drawerLayout.openDrawer(navigationView);
-                }*/
-
-                if(navigationView.getVisibility()==View.INVISIBLE) {
-                    navigationView.setVisibility(View.VISIBLE);
                 }
-                else
-                    navigationView.setVisibility(View.INVISIBLE);
             }
 
         });
@@ -136,15 +123,9 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void colorChanged(int color) {
                             Toast.makeText(MainActivity.this,"ok",Toast.LENGTH_SHORT).show();
-                            //需要将int color转换成color id
-                            //buttonAdd.setBackgroundTintList(getColorStateList(R.color.black));
-                            buttonAdd.setBackgroundColor(color);
+                            //按钮颜色
+                            buttonAdd.getBackground().setColorFilter(color, PorterDuff.Mode.SRC);
                             colorEdit=color;
-                            View bv = findViewById(android.R.id.title);
-                            //((View) bv.getParent()).setBackgroundColor(color);
-                            //bv.setBackgroundColor(color);
-                            //bv.getBackground().setColorFilter(color);
-
                         }
                     });
                     colorPickerDialog.show();
@@ -185,56 +166,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-/*
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void initWindow() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        NavigationView navigationview = (NavigationView) findViewById(R.id.navigation_view);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        setSupportActionBar(toolbar);//将toolbar与ActionBar关联
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, 0, 0);
-        drawer.setDrawerListener(toggle);//初始化状态
-        toggle.syncState();
-
-
-        //获取xml头布局view
-        View headerView = navigationview.getHeaderView(0);
-        //添加头布局的另外一种方式
-        //View headview=navigationview.inflateHeaderView(R.layout.navigationview_header);
-
-        //寻找头部里面的控件
-        ImageView imageView = headerView.findViewById(R.id.person);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "点击了头像", Toast.LENGTH_LONG).show();
-            }
-        });
-        navigationview.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return false;
-            }
-        });
-
-        //设置条目点击监听
-        navigationview.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                //安卓
-                Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                //设置哪个按钮被选中
-//                menuItem.setChecked(true);
-                //关闭侧边栏
-//                drawer.closeDrawers();
-                return false;
-            }
-        });
-    }
-*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

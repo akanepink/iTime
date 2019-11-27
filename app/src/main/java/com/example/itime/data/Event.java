@@ -86,7 +86,7 @@ public class Event implements Serializable {
             if (calendar == null) {
                 return "";
             }
-            SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");// 设置你想要的格式
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm");// 设置你想要的格式
             String dateStr = df.format(calendar.getTime());
             return dateStr;
         }catch (Exception e){

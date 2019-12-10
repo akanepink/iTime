@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">iTime</string>
-
+    <string name="count">计时</string>
+    <string name="label">标签</string>
+    <string name="widgets">小部件</string>
+    <string name="main_color">主题色</string>
+    <string name="pre_version">高级版</string>
+    <string name="settings">设置</string>
+    <string name="about">关于</string>
+    <string name="help">帮助与反馈</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

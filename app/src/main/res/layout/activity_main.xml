@@ -82,8 +82,8 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:fitsSystemWindows="false"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_layout"
-        app:menu="@menu/new_menu" />
+        app:menu="@menu/new_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -32,10 +32,6 @@ public class Event implements Serializable {
         this.backgId = backgId;
     }
 
-
-
-
-
     public String getMemo() {
         return memo;
     }

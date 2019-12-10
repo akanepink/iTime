@@ -7,27 +7,27 @@
         <item
             android:id="@+id/menu_home"
             android:icon="@mipmap/ic_stat_home"
-            android:title="计时"/>
+            android:title="@string/count"/>
 
         <item
             android:id="@+id/menu_label"
             android:icon="@mipmap/ic_stat_menu_label"
-            android:title="标签"/>
+            android:title="@string/label"/>
 
         <item
             android:id="@+id/menu_widgets"
             android:icon="@mipmap/ic_stat_widgets"
-            android:title="小部件"/>
+            android:title="@string/widgets"/>
 
         <item
             android:id="@+id/menu_color"
             android:icon="@mipmap/ic_stat_color"
-            android:title="主题色"/>
+            android:title="@string/main_color"/>
 
         <item
             android:id="@+id/menu_stars"
             android:icon="@mipmap/ic_stat_stars"
-            android:title="高级版"/>
+            android:title="@string/pre_version"/>
     </group>
 
     <group
@@ -36,17 +36,17 @@
         <item
             android:id="@+id/menu_settings"
             android:icon="@mipmap/ic_stat_settings"
-            android:title="设置"/>
+            android:title="@string/settings"/>
 
         <item
             android:id="@+id/menu_about"
             android:icon="@mipmap/ic_stat_error"
-            android:title="关于"/>
+            android:title="@string/about"/>
 
         <item
             android:id="@+id/menu_help"
             android:icon="@mipmap/ic_stat_announcement"
-            android:title="帮助与反馈"/>
+            android:title="@string/help"/>
     </group>
 
 </menu>

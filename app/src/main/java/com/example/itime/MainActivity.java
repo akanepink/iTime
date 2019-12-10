@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 //在这里处理item的点击事件
-                if(item.getTitle().equals("主题色"))
+                if(item.getTitle().equals(MainActivity.this.getString(R.string.main_color)))
                 {
                     ColorPickerDialog colorPickerDialog=new ColorPickerDialog(MainActivity.this, "主题色", new ColorPickerDialog.OnColorChangedListener() {
                         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -135,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     colorPickerDialog.show();
+                }
+                else if(item.getTitle().equals(MainActivity.this.getString(R.string.count)))
+                {
+                    drawerLayout.closeDrawer(navigationView);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_LONG).show();
@@ -244,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
         private int resourceId;
         private ImageView imageViewEventCover;
+        private TextView textViewEventCover;
 
         public EventAdapter(Context context, int resource, List<Event> objects) {
             super(context, resource, objects);
@@ -255,36 +260,15 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             Event event = getItem(position);//获取当前项的实例
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
-            imageViewEventCover=(view.findViewById(R.id.image_view_event_cover));
-            imageViewEventCover.setImageResource(event.getResourceId());
 
-            Bitmap bitmap = setTextToImg(getDateDiff(position),position);
-            imageViewEventCover.setImageBitmap(bitmap);
+            textViewEventCover=(view.findViewById(R.id.text_view_with_picture));
+            textViewEventCover.setBackgroundResource(event.getResourceId());
+            textViewEventCover.setText(getDateDiff(position));
+
             ((TextView) view.findViewById(R.id.text_view_event_title)).setText(event.getTitle());
             ((TextView) view.findViewById(R.id.text_view_event_date)).setText(event.calendarToString());
             ((TextView) view.findViewById(R.id.text_view_event_memo)).setText(event.getMemo());
             return view;
-        }
-
-        /**
-         * 文字绘制在图片上，并返回bitmap对象
-         */
-        private Bitmap setTextToImg(String text,int position) {
-            BitmapDrawable icon = (BitmapDrawable) getResources().getDrawable(EventAdapter.this.getItem(position).getResourceId());
-
-            Bitmap bitmap = icon.getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            // 抗锯齿
-            paint.setAntiAlias(true);
-            // 防抖动
-            paint.setDither(true);
-            paint.setTextSize(100);
-            paint.setColor(Color.parseColor("#ffffff"));
-            int x=text.length()*2-1;
-            canvas.drawText(text, (bitmap.getWidth()/x), (bitmap.getHeight() / 2), paint);
-
-            return bitmap;
         }
 
         private String getDateDiff(int position)
@@ -298,10 +282,10 @@ public class MainActivity extends AppCompatActivity {
              */
             long dTime=cTime/(1000*60*60*24);
             if(sTime>0)
-                return "还剩"+dTime +"天";
+                return "还剩\n"+dTime +"天";
             else {
                 dTime*=(-1);
-                return "已经" + dTime + "天";
+                return "已经\n" + dTime + "天";
             }
         }
     }

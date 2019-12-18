@@ -32,7 +32,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
     int year,month,day;
     int hour,minute;
     private Event receiveEvent=null;
-   // private int year,month,day;
     public static final int RESULT_CODE_EDIT_OK = 703;
     private boolean dateChangeFlag=false;
     private int colorBackg=-1;
@@ -77,7 +76,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(receiveEvent!=null) {
                     if(dateChangeFlag==true)
                     {receiveEvent.getCalendar().set(year,month,day,hour,minute);}
@@ -86,7 +84,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
 
                     Intent newIntent = new Intent();
                     Bundle newBundle = new Bundle();
-                    //newBundle.putInt("position",position);
                     newBundle.putSerializable("newEditEvent", receiveEvent);
 
                     newIntent.putExtras(newBundle);
@@ -109,7 +106,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         });
 
         //返回按钮的响应事件
-        //总是返回到show的layout界面       如果是新增 则返回到主界面
+        //如果是新增 则返回到主界面
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,30 +120,15 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_choose_date:
-                showTimePickDialog1();
-                showDatePickDialog1();
+                showTimePickDialog();
+                showDatePickDialog();
                 break;
             default:
                 break;
         }
     }
 
-    private void showDatePickDialog(){
-        Calendar nowCalendar=Calendar.getInstance();
-        new DatePickerDialog(EventEditActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Toast.makeText(EventEditActivity.this,"Year:" + year + " Month:" + month + " Day:" + dayOfMonth,Toast.LENGTH_SHORT).show();
-            }
-        }
-                , nowCalendar.get(Calendar.YEAR)
-                , nowCalendar.get(Calendar.MONTH)
-                , nowCalendar.get(Calendar.DAY_OF_MONTH)).show();
-
-    };
-
-    private void showDatePickDialog1() {
-
+    private void showDatePickDialog() {
         CustomDatePickerDialogFragment fragment = new CustomDatePickerDialogFragment();
         fragment.setOnSelectedDateListener(this);//注册选择日期的监听器
         if(receiveEvent==null) {
@@ -166,7 +148,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         else{
             Bundle bundle = new Bundle();
             Calendar currentDate = receiveEvent.getCalendar();
-            //Toast.makeText(EventEditActivity.this,currentDate.get(Calendar.YEAR)+":"+currentDate.MONTH+":"+currentDate.DAY_OF_MONTH,Toast.LENGTH_SHORT).show();
             currentDate.setTimeInMillis(System.currentTimeMillis());
             currentDate.set(Calendar.HOUR_OF_DAY, 0);
             currentDate.set(Calendar.MINUTE, 0);
@@ -180,9 +161,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         dateChangeFlag=true;
     }
 
-
-
-    private void showTimePickDialog1() {
+    private void showTimePickDialog() {
 
         CustomTimePickerDialogFragment fragment = new CustomTimePickerDialogFragment();
         fragment.setOnSelectedTimeListener(this);//注册选择日期的监听器
@@ -197,18 +176,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         fragment.show(getSupportFragmentManager(),CustomTimePickerDialogFragment.class.getSimpleName());
     }
 
-    private void showTimePickDialog(){
-        Calendar nowCalendar=Calendar.getInstance();
-        TimePickerDialog timePickerDialog=new TimePickerDialog(EventEditActivity.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Toast.makeText(EventEditActivity.this,"Hour:"+hourOfDay+"Minute:"+minute,Toast.LENGTH_SHORT).show();
-            }
-        },nowCalendar.get(Calendar.HOUR_OF_DAY),nowCalendar.get(Calendar.MINUTE),true);
-
-        timePickerDialog.getContext().setTheme(R.style.HTimePickerStyle);
-        timePickerDialog.show();
-    };
 
     @Override
     public void onSelectedDate(int year, int monthOfYear, int dayOfMonth) {
@@ -216,8 +183,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         this.year=year;
         month=monthOfYear;
         day=dayOfMonth;
-        Toast.makeText(EventEditActivity.this,year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日",Toast.LENGTH_SHORT).show();
-        //updateDate.set(this.year,month,day);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // 指定一个日期
@@ -228,8 +193,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         {
             e.printStackTrace();
         }
-        // 对 calendar 设置为 date 所定的日期
-
     }
 
 
@@ -238,9 +201,6 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
 
         this.hour=hour;
         this.minute=minite;
-
-        Toast.makeText(EventEditActivity.this,hour+" : "+minute,Toast.LENGTH_SHORT).show();
-        //updateDate.set(this.year,month,day);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:ss");
         // 指定一个日期
@@ -251,6 +211,5 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         {
             e.printStackTrace();
         }
-        // 对 calendar 设置为 date 所定的日期
     }
 }

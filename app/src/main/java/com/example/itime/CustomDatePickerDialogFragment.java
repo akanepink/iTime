@@ -43,7 +43,6 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         color=bundle.getInt("color");
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,7 +76,6 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
             datePicker = view.findViewById(R.id.time_picker_view);
             if(color!=-1)
             datePicker.setBackgroundColor(color);
-            //datePicker.updateDate(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),currentDate.get(Calendar.DAY_OF_MONTH));
             backButton = view.findViewById(R.id.button_date_back);
             backButton.setOnClickListener(this);
             ensureButton = view.findViewById(R.id.button_date_ensure);
@@ -119,7 +117,6 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         }
         dismiss();
     }
-
 
     @Override
     public void onDestroyView() {

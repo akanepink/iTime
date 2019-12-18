@@ -20,18 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.itime.data.Event;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 
 public class EventShowActivity extends AppCompatActivity {
 
-    public static final int RESULT_SHOW_OK = 701;
-    public static final int REQUEST_CODE_EDIT_BOOK = 903;
+    public static final int REQUEST_CODE_EDIT_EVENT = 903;
     public static final int RESULT_CODE_EDIT_OK = 703;
     public static final int RESULT_CODE_DELETE_OK = 704;
     public static final int RESULT_CODE_EDIT_SHOW_OK = 705;
-    private ImageButton buttonShowBack,buttonShowFull,buttonShowDelete;
-    private ImageButton buttonShowShare,buttonShowEdit;
+    private FloatingActionButton buttonShowBack,buttonShowFull,buttonShowDelete;
+    private FloatingActionButton buttonShowShare,buttonShowEdit;
     private TextView textViewShowTitle,textViewShowDate,textViewShowCountdown;
     private Event eventShow;
     private Calendar nowSystemTime;
@@ -52,11 +52,11 @@ public class EventShowActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        buttonShowBack=this.findViewById(R.id.image_button_show_back);
-        buttonShowFull=this.findViewById(R.id.image_button_show_full);
-        buttonShowDelete=this.findViewById(R.id.image_button_show_delete);
-        buttonShowShare=this.findViewById(R.id.image_button_show_share);
-        buttonShowEdit=this.findViewById(R.id.image_button_show_edit);
+        buttonShowBack=this.findViewById(R.id.floating_action_button_back);
+        buttonShowFull=this.findViewById(R.id.floating_action_button_full);
+        buttonShowDelete=this.findViewById(R.id.floating_action_button_delete);
+        buttonShowShare=this.findViewById(R.id.floating_action_button_share);
+        buttonShowEdit=this.findViewById(R.id.floating_action_button_edit);
         textViewShowTitle=this.findViewById(R.id.text_view_show_event_title);
         textViewShowDate=this.findViewById(R.id.text_view_show_event_date);
         textViewShowCountdown=this.findViewById(R.id.text_view_show_event_countdown);
@@ -106,8 +106,6 @@ public class EventShowActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final int deletePosition=position;
                 new android.app.AlertDialog.Builder(EventShowActivity.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("询问")
                         .setMessage("是否删除该计时")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
@@ -132,15 +130,13 @@ public class EventShowActivity extends AppCompatActivity {
         buttonShowEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent=new Intent(EventShowActivity.this,EventEditActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putInt("colorBackg",colorEdit);
                 bundle.putInt("position",position);
                 bundle.putSerializable("event", eventShow);//序列化
                 intent.putExtras(bundle);//发送数据
-                startActivityForResult(intent, REQUEST_CODE_EDIT_BOOK);
-                //EventShowActivity.this.finish();
+                startActivityForResult(intent, REQUEST_CODE_EDIT_EVENT);
             }
         });
     }
@@ -150,7 +146,7 @@ public class EventShowActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode)
         {
-            case REQUEST_CODE_EDIT_BOOK:
+            case REQUEST_CODE_EDIT_EVENT:
                 if(resultCode==RESULT_CODE_EDIT_OK)
                 {
                     Event newEditEvent=(Event)data.getExtras().getSerializable("newEditEvent");
@@ -168,7 +164,6 @@ public class EventShowActivity extends AppCompatActivity {
         }
     }
 
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -179,9 +174,6 @@ public class EventShowActivity extends AppCompatActivity {
             }
         }
     };
-
-
-
 
     private String getTimeDiff()
     {
@@ -204,11 +196,6 @@ public class EventShowActivity extends AppCompatActivity {
         }
 
         else {
-            /*sTime*=(-1);
-            mTime*=(-1);
-            hTime*=(-1);
-            dTime*=(-1);
-             */
             if(dTime!=0)
             {
                 dTime*=(-1);

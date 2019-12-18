@@ -11,7 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,6 +22,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -45,7 +48,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_NEW_EVENT = 901;
     public static final int REQUEST_CODE_SHOW_EVENT = 902;
-    public static final int RESULT_CODE_EDIT_OK = 703;
     public static final int RESULT_CODE_DELETE_OK = 704;
     public static final int RESULT_CODE_EDIT_SHOW_OK = 705;
     private ViewPager viewPagerEvents;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private static int picNum=2;
     private DrawerLayout drawerLayout;
     NavigationView navigationView;
+    static boolean flag=false;
 
     @Override
     protected void onDestroy() {
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //隐藏标题栏
         getSupportActionBar().hide();
         //状态栏透明
@@ -91,9 +95,34 @@ public class MainActivity extends AppCompatActivity {
         if (listEvents.size() == 0) {
             init();
         }
+
         eventAdapter = new EventAdapter(MainActivity.this, R.layout.list_view_item_event, listEvents);
         final ListView listViewEvents = this.findViewById(R.id.list_view_event);
         listViewEvents.setAdapter(eventAdapter);
+
+        //判断用户是否为第一次进入应用程序
+        SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences("share", Context.MODE_PRIVATE);
+
+        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (isFirstRun){
+            Log.e("debug", "第一次运行");
+            editor.putBoolean("isFirstRun", false);
+            editor.commit();
+            new android.app.AlertDialog.Builder(MainActivity.this)
+                    .setTitle("欢迎使用iTime")
+                    .setMessage("你聪明的，告诉我，我们的日子为什么一去不复返呢？")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            flag = true;
+                        }
+                    })
+                    .create().show();
+        }else {
+            Log.e("debug", "不是第一次运行");
+        }
 
         buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,9 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     drawerLayout.openDrawer(navigationView);
                 }
             }
-
         });
-
 
         View headerView = navigationView.getHeaderView(0);
         headerView.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"此功能未完善",Toast.LENGTH_SHORT).show();
             }
         });
-
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -128,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void colorChanged(int color) {
-                            Toast.makeText(MainActivity.this,"ok",Toast.LENGTH_SHORT).show();
                             //按钮颜色
                             buttonAdd.getBackground().setColorFilter(color, PorterDuff.Mode.SRC);
                             colorEdit=color;
@@ -143,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_LONG).show();
                 }
-                //drawerLayout.closeDrawers();
                 return true;
             }
         });
@@ -183,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_NEW_EVENT:
                 if (resultCode == RESULT_OK) {
-                    //需要修改
                     Event newEvent=(Event)data.getExtras().getSerializable("newEvent");
                     String resourceBase="backg_";
                     String resStr=resourceBase+picNum+"_mini";
@@ -191,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                     int resId=getResources().getIdentifier(resStr,"drawable",getPackageName());
                     int backgId=getResources().getIdentifier(backgStr,"drawable",getPackageName());
                     picNum++;
-                    if(picNum==4)
+                    if(picNum==6)
                         picNum=1;
                     newEvent.setResourceId(resId);
                     newEvent.setBackgId(backgId);
@@ -210,8 +233,6 @@ public class MainActivity extends AppCompatActivity {
                         listEvents.get(position).setMemo(newEditEvent.getMemo());
                         listEvents.get(position).setCalendar(newEditEvent.getCalendar());
                         eventAdapter.notifyDataSetChanged();
-                        Toast.makeText(MainActivity.this,newEditEvent.timeToString(),Toast.LENGTH_SHORT).show();
-
                     }
                 }
                 if(resultCode==RESULT_CODE_DELETE_OK)
@@ -221,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
                     {
                         listEvents.remove(deletePosition);
                         eventAdapter.notifyDataSetChanged();
-                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
@@ -234,10 +254,6 @@ public class MainActivity extends AppCompatActivity {
         initEvent.setBackgId(R.drawable.backg_1);
         listEvents.add(initEvent);
 
-        /*
-        listEvents.add(new Event("likey","memo",R.drawable.backg_2_mini));
-        listEvents.add(new Event("numnum","owewdsdmo",R.drawable.backg_3_mini));
-        */
     }
 
     public List<Event> getListEvents(){
@@ -275,14 +291,14 @@ public class MainActivity extends AppCompatActivity {
         {
             long cTime=this.getItem(position).getCalendar().getTimeInMillis()-nowSystemTime.getTimeInMillis();
             long sTime=cTime/1000;//时间差，单位：秒
-            /*
-            long mTime=sTime/60;
-            long hTime=mTime/60;
-            long dTime=hTime/24;
-             */
             long dTime=cTime/(1000*60*60*24);
-            if(sTime>0)
-                return "还剩\n"+dTime +"天";
+            if(sTime>0){
+                if(dTime>30)
+                    return "还有\n"+dTime +"天";
+                else
+                    return "只剩\n"+dTime+"天";
+            }
+
             else {
                 dTime*=(-1);
                 return "已经\n" + dTime + "天";

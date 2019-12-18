@@ -24,7 +24,7 @@
             android:id="@+id/view_pager_event_show"
             android:layout_width="match_parent"
             android:layout_height="181dp"
-            android:background="@drawable/backg_1_mini">
+            android:background="@drawable/backg_mid">
 
         </androidx.viewpager.widget.ViewPager>
 

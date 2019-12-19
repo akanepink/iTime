@@ -84,6 +84,7 @@
         android:layout_gravity="left"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_layout"
-        app:menu="@menu/new_menu"/>
+        app:menu="@menu/new_menu"
+        app:insetForeground="@color/transparent"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

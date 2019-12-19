@@ -193,6 +193,7 @@ public class EventEditActivity extends AppCompatActivity implements View.OnClick
         {
             e.printStackTrace();
         }
+        buttonDate.setText("日期\n"+this.year+"年"+(month+1)+"月"+day+"日");
     }
 
 
